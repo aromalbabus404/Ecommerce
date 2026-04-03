@@ -1023,8 +1023,6 @@ def checkout(request):
     return render(request, "checkout.html", {"address": address})
 
 
-
-
 def place_order(request):
     user_id = request.session.get("user_id")
     if not user_id:
@@ -1032,77 +1030,107 @@ def place_order(request):
 
     cart_items = Cart.objects.filter(USER_id=user_id)
     if not cart_items.exists():
+        messages.error(request, "Your cart is empty!")
         return redirect("view_cart")
 
-    address_id = request.POST.get("address_id")
-    payment_method = request.POST.get("payment_method")
-    address = Address.objects.get(id=address_id)
+    if request.method == "POST":
+        address_id = request.POST.get("address_id")
+        payment_method = request.POST.get("payment_method")
 
-    order = Order.objects.create(
-        USER_id=user_id,
-        ADDRESS=address,
-        payment_method=payment_method,
-        total_price=0
-    )
+        if not address_id or not payment_method:
+            messages.error(request, "Please select address and payment method.")
+            return redirect("checkout")
 
-    total_amount = 0
+        try:
+            address = Address.objects.get(id=address_id)
+        except Address.DoesNotExist:
+            messages.error(request, "Invalid address selected.")
+            return redirect("checkout")
 
-    for item in cart_items:
-        product = item.SNACKS or item.FRUITS or item.VEGITABLES or \
-                  item.BEVERAGES or item.EGGS or item.FISH or \
-                  item.RICE or item.MILK
-
-        if product.stock < item.quantity:
-            messages.error(request, f"Not enough stock for {product.name}")
-            order.delete()
-            return redirect("view_cart")
-
-        product.stock -= item.quantity
-        product.save()
-
-        price = product.price
-        qty = item.quantity
-        total_amount += price * qty
-
-        OrderItem.objects.create(
-            ORDER=order,
-            SNACKS=item.SNACKS,
-            FRUITS=item.FRUITS,
-            VEGITABLES=item.VEGITABLES,
-            BEVERAGES=item.BEVERAGES,
-            EGGS=item.EGGS,
-            FISH=item.FISH,
-            RICE=item.RICE,
-            MILK=item.MILK,
-            quantity=qty,
-            price=price
+        # ✅ Create Order
+        order = Order.objects.create(
+            USER_id=user_id,
+            ADDRESS=address,
+            payment_method=payment_method,
+            total_price=0
         )
 
-    order.total_price = total_amount
-    order.save()
+        total_amount = 0
 
-    # 🔥 Get admin & staff emails
-    admin_staff_logins = Login.objects.filter(
-        user_type__in=['admin', 'staff']
-    ).values_list('email', flat=True)
+        # ✅ Process Cart Items
+        for item in cart_items:
+            product = (
+                item.SNACKS or item.FRUITS or item.VEGITABLES or
+                item.BEVERAGES or item.EGGS or item.FISH or
+                item.RICE or item.MILK
+            )
 
-    # 📧 Send Email
-    send_mail(
-        subject=f"New Order #{order.id}",
-        message=f"""
+            if not product:
+                continue
+
+            # ❌ Stock check
+            if product.stock < item.quantity:
+                messages.error(request, f"Not enough stock for {product.name}")
+                order.delete()
+                return redirect("view_cart")
+
+            # ✅ Reduce stock
+            product.stock -= item.quantity
+            product.save()
+
+            price = product.price
+            qty = item.quantity
+            total_amount += price * qty
+
+            # ✅ Create OrderItem
+            OrderItem.objects.create(
+                ORDER=order,
+                SNACKS=item.SNACKS,
+                FRUITS=item.FRUITS,
+                VEGITABLES=item.VEGITABLES,
+                BEVERAGES=item.BEVERAGES,
+                EGGS=item.EGGS,
+                FISH=item.FISH,
+                RICE=item.RICE,
+                MILK=item.MILK,
+                quantity=qty,
+                price=price
+            )
+
+        # ✅ Update total price
+        order.total_price = total_amount
+        order.save()
+
+        # ✅ EMAIL SENDING (SAFE - NO CRASH)
+        try:
+            admin_staff_emails = Login.objects.filter(
+                user_type__in=['admin', 'staff']
+            ).values_list('email', flat=True)
+
+            send_mail(
+                subject=f"New Order #{order.id}",
+                message=f"""
 New Order Placed!
 
 Order ID: {order.id}
 Total Amount: ₹{total_amount}
 Payment Method: {payment_method}
 """,
-        from_email=settings.EMAIL_HOST_USER,
-        recipient_list=list(admin_staff_logins),
-        fail_silently=False,
-    )
-    cart_items.delete()
-    return redirect("order_success")
+                from_email=settings.EMAIL_HOST_USER,
+                recipient_list=list(admin_staff_emails),
+                fail_silently=True,  # ✅ prevents crash
+            )
 
+        except Exception as e:
+            print("Email Error:", e)
+
+        # ✅ Clear cart
+        cart_items.delete()
+
+        messages.success(request, "Order placed successfully!")
+        return redirect("order_success")
+
+    return redirect("checkout")
 
 
 def order_success(request):
