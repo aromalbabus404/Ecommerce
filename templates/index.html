@@ -1,0 +1,1264 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FreshMart | Black & White Edition</title>
+
+  <!-- Bootstrap & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #000;
+      --secondary: #1a1a1a;
+      --accent: #fff;
+      --muted: #ccc;
+      --light-bg: #f8f8f8;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--light-bg);
+      color: var(--primary);
+      overflow-x: hidden;
+    }
+
+    /* Navbar */
+    .navbar {
+      background: var(--primary);
+      box-shadow: 0 4px 25px rgba(0,0,0,0.5);
+      padding: 0.8rem 1.2rem;
+    }
+
+    .navbar-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent) !important;
+      transition: all 0.3s ease;
+      letter-spacing: 1px;
+    }
+
+    .navbar-brand:hover {
+      color: var(--muted) !important;
+      transform: scale(1.05);
+    }
+
+    .nav-link {
+      color: var(--accent) !important;
+      font-weight: 500;
+      margin-left: 15px;
+      transition: all 0.3s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--muted) !important;
+    }
+
+    .nav-link.active {
+      border-bottom: 2px solid var(--accent);
+    }
+
+    .profile-btn { transition: 0.3s; }
+    .profile-btn:hover { transform: scale(1.15); }
+
+    .profile-menu {
+      border-radius: 15px;
+      padding: 8px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    }
+
+    .profile-menu .dropdown-item {
+      padding: 10px;
+      border-radius: 10px;
+      transition: 0.2s;
+    }
+
+    .profile-menu .dropdown-item:hover {
+      background: #f0f0f0;
+    }
+
+a{
+  text-decoration: none;
+}
+/* Categories */
+h3.section-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+  font-size: 2.2rem;
+  color: #1b5e20; /* premium deep green */
+  text-align: center;
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+h3.section-title::after {
+  content: "";
+  width: 90px;
+  height: 3px;
+  background: #1b5e20; /* premium deep green */
+  display: block;
+  margin: 14px auto 0;
+  border-radius: 5px;
+}
+
+/* Card */
+.category-card {
+  background: #f9fff9; /* soft mint white */
+  border-radius: 18px;
+  padding: 40px 20px;
+  border: 1px solid #cde8d0; /* pastel green border */
+  transition: all 0.4s ease;
+  text-align: center;
+  box-shadow: 0 4px 18px rgba(0, 80, 20, 0.06); /* soft green shadow */
+}
+
+.category-card:hover {
+  background: #1b5e20;  /* premium green */
+  color: #fff;
+  border-color: #1b5e20;
+  transform: translateY(-8px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.22);
+}
+
+.category-card i {
+  width: 120px;
+  font-size: 2.8rem;
+  margin-bottom: 15px;
+  color: #1b5e20; /* default icon color */
+}
+
+.category-card:hover i {
+  color: #fff; /* icon becomes white on hover */
+}
+ .category-scroll {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 10px;
+  }
+.category-scroll a {
+    display: inline-block;
+  }
+
+
+    /* Products */
+    .product-card {
+      border-radius: 20px;
+      background: #fff;
+      overflow: hidden;
+      transition: all 0.35s ease;
+      box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+
+    .product-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    .product-card img {
+      height: 220px;
+      width: 100%;
+      object-fit: cover;
+      transition: all 0.4s ease;
+    }
+
+    .product-card:hover img { transform: scale(1.08); }
+
+    .product-card h6 {
+      font-weight: 600;
+      margin-top: 12px;
+      color: var(--primary);
+    }
+
+    .product-card p {
+      color: var(--secondary);
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+
+    .latest-products a { text-decoration: none !important; color: inherit; }
+
+    /* Footer */
+    .footer {
+      background: var(--primary);
+      color: var(--accent);
+      padding: 60px 20px 30px;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .footer h5 { color: var(--accent); margin-bottom: 10px; }
+    .footer p, .footer a { color: var(--accent); }
+    .footer a:hover { color: var(--muted); text-decoration: underline; }
+
+    .footer .footer-map { max-width: 100%; box-shadow: 0 8px 25px rgba(0,0,0,0.4); overflow: hidden; }
+    @media (max-width: 767px) { .footer .footer-map { margin: 20px 0; } }
+
+    .footer-link { color: #bbb; text-decoration: none; transition: 0.3s; }
+    .footer-link:hover { color: #fff; padding-left: 4px; }
+
+    .social-icon {
+      font-size: 1.6rem;
+      color: #fff;
+      transition: transform 0.4s ease, color 0.3s;
+    }
+    .social-icon:hover { transform: translateY(-8px) scale(1.15); color: #0d6efd; }
+
+    /* Floating buttons */
+    .whatsapp-small, .instagram-small {
+      position: fixed;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 26px;
+      z-index: 9999;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .whatsapp-small {
+      bottom: 20px;
+      right: 20px;
+      background-color: #25D366;
+      color: #fff;
+      box-shadow: 0 0 10px rgba(0,255,0,0.4);
+      animation: pulse 1.5s infinite ease-in-out;
+    }
+    .instagram-small {
+      bottom: 80px;
+      right: 20px;
+      background: radial-gradient(circle at 30% 30%, #fdf497, #fd5949, #d6249f, #285AEB);
+      color: #fff;
+      box-shadow: 0 0 10px rgba(255,0,122,0.4);
+      animation: pulseInst 1.5s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 10px rgba(0,255,0,0.4); }
+      50% { transform: scale(1.08); box-shadow: 0 0 20px rgba(0,255,0,0.6); }
+    }
+
+    @keyframes pulseInst {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 10px rgba(255,0,122,0.4); }
+      50% { transform: scale(1.08); box-shadow: 0 0 20px rgba(255,0,122,0.6); }
+    }
+
+    .whatsapp-small:hover, .instagram-small:hover { transform: scale(1.15); }
+
+
+    .facebook-small {
+  position: fixed;
+  bottom: 140px; /* stacked above Instagram and WhatsApp */
+  right: 20px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 26px;
+  color: #fff;
+  background-color: #1877F2;
+  box-shadow: 0 0 10px rgba(24,119,242,0.4);
+  z-index: 9999;
+  text-decoration: none;
+  animation: pulseFB 1.5s infinite ease-in-out;
+  transition: transform 0.3s;
+}
+
+@keyframes pulseFB {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 10px rgba(24,119,242,0.4); }
+  50% { transform: scale(1.08); box-shadow: 0 0 20px rgba(24,119,242,0.6); }
+}
+
+.facebook-small:hover { transform: scale(1.15); }
+
+    /* Carousel Thumbnails */
+.carousel-thumb {
+  width: 170px;
+  height: 170px;
+  object-fit: cover;
+  border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.carousel-thumb:hover {
+  transform: scale(1.1);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+}
+
+.carousel-card p {
+  font-weight: 600;
+  color: #111;
+}
+
+@media (max-width: 767px) {
+  .carousel-thumb {
+    width: 120px;
+    height: 120px;
+  }
+  .carousel-card p {
+    font-size: 0.85rem;
+  }
+}
+
+.footer .fw-bold + p {
+    margin-bottom: 0.5rem;
+}
+
+.footer .fw-bold {
+    margin-top: 0.8rem;
+    color: var(--accent);
+}
+
+/* Section Background – Premium subtle gradient */
+.trusted-section {
+  background: linear-gradient(to bottom, #ffffff, #f1f1f1);
+  border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+/* Trust Cards – Gradient Soft Glow */
+.trust-card {
+  background: linear-gradient(145deg, #ffffff, #e9e9e9);
+  border-radius: 18px;
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 4px 4px 14px rgba(0,0,0,0.08),
+              -4px -4px 14px rgba(255,255,255,0.9);
+  transition: 0.3s ease;
+}
+
+.trust-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 6px 6px 20px rgba(0,0,0,0.12),
+              -6px -6px 20px rgba(255,255,255,1);
+}
+
+/* Icons Soft-Dark */
+.trust-icon {
+  font-size: 34px;
+  opacity: 0.85;
+}
+
+/* Numbers */
+.trust-number {
+  font-size: 34px;
+  color: #111;
+  margin-bottom: 4px;
+}
+
+/* Labels */
+.trust-label {
+  color: #444;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+}
+/* Guarantee Row – Neumorphic Glass Style */
+.guarantee-row {
+  background: #f0f0f3;
+  padding: 50px 0;
+  border-top: 1px solid rgba(255,255,255,0.5);
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+/* Neumorphic Guarantee Items */
+.guarantee-item {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 18px 22px;
+  border-radius: 22px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #111;
+  border: 1px solid rgba(255,255,255,0.4);
+  box-shadow: 6px 6px 15px rgba(0,0,0,0.08),
+              -6px -6px 15px rgba(255,255,255,0.8);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+/* Hover Effect */
+.guarantee-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 8px 8px 20px rgba(0,0,0,0.12),
+              -8px -8px 20px rgba(255,255,255,0.9);
+  background: rgba(255, 255, 255, 0.3);
+}
+
+
+/* Neumorphic Soft Pills */
+.badge-chip {
+  background: #f1f1f1;
+  border-radius: 40px;
+  padding: 12px 22px;
+  font-size: 14px;
+  color: #333;
+  box-shadow:
+    4px 4px 10px rgba(0,0,0,0.12),
+    -4px -4px 10px rgba(255,255,255,0.7);
+  border: none;
+  transition: 0.25s ease;
+}
+
+.badge-chip:hover {
+  box-shadow:
+    2px 2px 8px rgba(0,0,0,0.15),
+    -2px -2px 8px rgba(255,255,255,0.9);
+  transform: translateY(-3px);
+}
+
+ .hero-standard {
+    position: relative;
+    padding: 110px 0;
+    background: url('{% static "a.jpg" %}') no-repeat center center/cover;
+    overflow: hidden;
+    margin-top: 84px;
+  }
+
+  /* Elegant gradient glow overlay */
+  .hero-standard::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background: 
+      linear-gradient(
+        135deg,
+        rgba(0, 0, 0, 0.75) 0%,
+        rgba(0, 0, 0, 0.45) 40%,
+        rgba(255, 255, 255, 0.05) 100%
+      );
+
+    z-index: 1;
+  }
+
+  .hero-wrapper {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Soft-glow text styling */
+  .hero-text {
+    color: #fff;
+    max-width: 650px;
+    padding: 10px;
+    text-shadow: 0 4px 10px rgba(0,0,0,0.45);
+  }
+
+  .hero-text h1 {
+    font-size: 3.4rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+  }
+
+  .hero-text p {
+    font-size: 1.2rem;
+    margin-top: 15px;
+    line-height: 1.6;
+    opacity: 0.95;
+  }
+
+  /* Premium glow buttons */
+  .hero-buttons a {
+    display: inline-block;
+    padding: 13px 34px;
+    border-radius: 50px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.3s ease;
+    margin-right: 12px;
+  }
+
+  /* Glossy White Button */
+  .btn-primary {
+    background: #ffffff;
+    color: #000;
+    box-shadow: 0 6px 18px rgba(255,255,255,0.3);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px rgba(255,255,255,0.45);
+  }
+
+  /* Transparent glow button */
+  .btn-secondary {
+    border: 2px solid #fff;
+    color: #fff;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(3px);
+  }
+
+  .btn-secondary:hover {
+    background: rgba(255,255,255,0.25);
+    transform: translateY(-3px);
+  }
+  </style>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">🍃 FreshMart</a>
+    <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
+        <li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="shop">Shop</a></li>
+        <li class="nav-item"><a class="nav-link" href="about">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="contact">Contact</a></li>
+        <li class="nav-item dropdown ms-lg-3">
+          <a class="nav-link profile-btn" href="#" data-bs-toggle="dropdown">
+            <i class="fa-solid fa-user-circle fa-xl"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end profile-menu">
+            <li><a class="dropdown-item" href="profile_view"><i class="fa-solid fa-user me-2"></i> My Profile</a></li>
+            <li><a class="dropdown-item" href="view_cart"><i class="fa-solid fa-cart-shopping me-2"></i> Cart</a></li>
+            <li><a class="dropdown-item" href="orders"><i class="fa-solid fa-bag-shopping me-2"></i> Orders</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-danger" href="logout"><i class="fa-solid fa-right-from-bracket me-2"></i> Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<section class="hero-standard">
+  
+  <div class="container-fluid hero-wrapper d-flex align-items-center" style="min-height: 420px;">
+
+    <div class="hero-text">
+      <h1>Nature’s Freshness, Every Day</h1>
+      <p>From farm to table, enjoy hand-picked fruits, vegetables, and pantry essentials delivered with care.</p>
+
+      <div class="hero-buttons mt-3">
+        <a href="shop" class="btn-primary me-2">Explore Products</a>
+        <a href="service" class="btn-secondary">How It Works</a>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- Categories -->
+<section class="py-5 bg-white">
+  <div class="container">
+    <h3 class="section-title">Shop by Category</h3>
+
+    <div class="category-scroll d-flex gap-4">
+
+      <a href="fruits_pageview" class="text-decoration-none text-dark">
+        <div class="category-card text-center">
+          <i class="fa-solid fa-apple-whole"></i>
+          <h6 class="fw-bold mt-2">Fresh Fruits</h6>
+        </div>
+      </a>
+
+      <a href="vegitable_pageview" class="text-decoration-none text-dark">
+        <div class="category-card text-center">
+          <i class="fa-solid fa-carrot"></i>
+          <h6 class="fw-bold mt-2">Vegetables</h6>
+        </div>
+      </a>
+
+      
+      <a href="beverage_pageview" class="text-decoration-none text-dark">
+        <div class="category-card text-center">
+          <i class="fa-solid fa-bottle-water"></i>
+          <h6 class="fw-bold mt-2">Beverages</h6>
+        </div>
+      </a>
+
+      <a href="snack_pageview" class="text-decoration-none text-dark">
+        <div class="category-card text-center">
+          <i class="fa-solid fa-bread-slice"></i>
+          <h6 class="fw-bold mt-2">Snacks</h6>
+        </div>
+      </a>
+
+      <a href="egg_pageview" class="text-decoration-none text-dark">
+        <div class="category-card text-center">
+          <i class="fa-solid fa-egg"></i>
+          <h6 class="fw-bold mt-2">Eggs</h6>
+        </div>
+      </a>
+
+      <a href="fish_pageview" class="text-decoration-none text-dark">
+        <div class="category-card text-center">
+          <i class="fa-solid fa-fish"></i>
+          <h6 class="fw-bold mt-2">Fish</h6>
+        </div>
+      </a>
+
+      <a href="milk_pageview" class="text-decoration-none text-dark">
+        <div class="category-card text-center">
+          <i class="fa-solid fa-cow"></i>
+          <h6 class="fw-bold mt-2">Milk</h6>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- Latest Products -->
+<section class="py-5 bg-light latest-products">
+  <div class="container-fluid">
+    <h3 class="section-title">Latest Products</h3>
+    <div class="row g-4 justify-content-center">
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <a href="fruits_pageview">
+          <div class="product-card">
+            <img src="{% static 'download.jpeg' %}" alt="Banana" loading="lazy">
+            <h6>Banana</h6>
+            <p>₹40</p>
+          </div>
+        </a>
+      </div>
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <a href="vegitable_pageview">
+          <div class="product-card">
+            <img src="{% static 'pexels-enginakyurt-2899682.jpg' %}" alt="Tomato" loading="lazy">
+            <h6>Tomato</h6>
+            <p>₹60</p>
+          </div>
+        </a>
+      </div>
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <a href="snack_pageview">
+          <div class="product-card">
+            <img src="{% static 'pexels-marcia-salido-346903577-31012755.jpg' %}" alt="Lays" loading="lazy">
+            <h6>Lays</h6>
+            <p>₹30</p>
+          </div>
+        </a>
+      </div>
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <a href="snack_pageview">
+          <div class="product-card">
+           <img src="{% static 'oreo1.jpg' %}" alt="Oreo" loading="lazy">
+            <h6>Oreo</h6>
+            <p>₹10</p>
+          </div>
+        </a>
+      </div>
+
+
+
+      <!-- Extra Latest Products -->
+<div class="col-6 col-sm-4 col-md-3 col-lg-2">
+  <a href="vegitable_pageview">
+    <div class="product-card">
+      <img src="{% static 'poteto.jpg' %}" alt="Potato" loading="lazy">
+      <h6>Potato</h6>
+      <p>₹30</p>
+    </div>
+  </a>
+</div>
+
+<div class="col-6 col-sm-4 col-md-3 col-lg-2">
+  <a href="fruits_pageview">
+    <div class="product-card">
+      <img src="{% static 'grapes.jpg' %}" alt="Grapes" loading="lazy">
+      <h6>Grapes</h6>
+      <p>₹90</p>
+    </div>
+  </a>
+</div>
+
+<div class="col-6 col-sm-4 col-md-3 col-lg-2">
+  <a href="beverage_pageview">
+    <div class="product-card">
+      <img src="{% static 'sprite.jpg' %}" alt="Sprite" loading="lazy">
+      <h6>Sprite</h6>
+      <p>₹45</p>
+    </div>
+  </a>
+</div>
+
+<div class="col-6 col-sm-4 col-md-3 col-lg-2">
+  <a href="snack_pageview">
+    <div class="product-card">
+      <img src="{% static 'kurkure.jpg' %}" alt="Kurkure" loading="lazy">
+      <h6>Kurkure</h6>
+      <p>₹20</p>
+    </div>
+  </a>
+</div>
+
+<div class="col-6 col-sm-4 col-md-3 col-lg-2">
+  <a href="fish_pageview">
+    <div class="product-card">
+      <img src="{% static 'sprwans.jpg' %}" alt="Prawns" loading="lazy">
+      <h6>Prawns</h6>
+      <p>₹100</p>
+    </div>
+  </a>
+</div>
+
+
+<div class="col-6 col-sm-4 col-md-3 col-lg-2">
+  <a href="rice_pageview">
+    <div class="product-card">
+      <img src="{% static 'rice.jpg' %}" alt="Rice" loading="lazy">
+      <h6>Premium Rice</h6>
+      <p>₹55/kg</p>
+    </div>
+  </a>
+</div>
+
+      <!-- Extra Latest Products -->
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <a href="milk_pageview">
+          <div class="product-card">
+            <img src="{% static 'milk.jpg' %}" alt="Milk" loading="lazy">
+            <h6>Milk</h6>
+            <p>₹50</p>
+          </div>
+        </a>
+      </div>
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <a href="fruits_pageview">
+          <div class="product-card">
+            <img src="{% static 'apple.jpg' %}" alt="Apple" loading="lazy">
+            <h6>Apple</h6>
+            <p>₹120</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Carousel / Popular Grocery Brands -->
+<section class="py-5 bg-light">
+  <div class="container">
+    <h3 class="section-title text-center mb-4 fw-bold">Popular Grocery Brands</h3>
+
+    <div id="freshMartCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+
+        <!-- Slide 1 -->
+        <div class="carousel-item active">
+          <div class="d-flex justify-content-center gap-4 flex-wrap text-center">
+
+            <div class="carousel-card">
+              <img src="{% static 'Maggie.jpg' %}" class="carousel-thumb" alt="Maggie">
+              <p class="mt-2 fw-semibold">Maggie</p>
+            </div>
+
+            <div class="carousel-card">
+              <img src="{% static 'Bru.jpg' %}" class="carousel-thumb" alt="Bru">
+              <p class="mt-2 fw-semibold">Bru</p>
+            </div>
+
+            <div class="carousel-card">
+              <img src="{% static 'Colgate.jpg' %}" class="carousel-thumb" alt="Colgate">
+              <p class="mt-2 fw-semibold">Collgate</p>
+            </div>
+
+            <div class="carousel-card">
+              <img src="{% static 'Surfexcel.jpg' %}" class="carousel-thumb" alt="Surfexcel">
+              <p class="mt-2 fw-semibold">Surf Excel</p>
+            </div>
+
+            <div class="carousel-card">
+              <img src="{% static 'Aashirvaad.jpg' %}" class="carousel-thumb" alt="Aashirvaad">
+              <p class="mt-2 fw-semibold">Aashirvaad</p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="carousel-item">
+          <div class="d-flex justify-content-center gap-4 flex-wrap text-center">
+            <div class="carousel-card">
+              <img src="{% static 'horlicks.jpg' %}" class="carousel-thumb" alt="Horlicks">
+              <p class="mt-2 fw-semibold">Horlicks</p>
+            </div>
+            <div class="carousel-card">
+              <img src="{% static 'GRB.jpg' %}" class="carousel-thumb" alt="GRB">
+              <p class="mt-2 fw-semibold">GRB Ghee</p>
+            </div>
+            <div class="carousel-card">
+              <img src="{% static 'daily milk.jpg' %}" class="carousel-thumb" alt="Dairy Milk">
+              <p class="mt-2 fw-semibold">Dairy Milk</p>
+            </div>
+            <div class="carousel-card">
+              <img src="{% static 'kinder joy.jpg' %}" class="carousel-thumb" alt="Kinder Joy">
+              <p class="mt-2 fw-semibold">Kinder Joy</p>
+            </div>
+            <div class="carousel-card">
+              <img src="{% static 'ice cream.jpg' %}" class="carousel-thumb" alt="Ice Cream">
+              <p class="mt-2 fw-semibold">Ice Cream</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="carousel-item">
+          <div class="d-flex justify-content-center gap-4 flex-wrap text-center">
+            <div class="carousel-card">
+              <img src="{% static 'pickle.jpg' %}" class="carousel-thumb" alt="Pickle">
+              <p class="mt-2 fw-semibold">Pickles</p>
+            </div>
+            <div class="carousel-card">
+              <img src="{% static 'tomato sauce.jpg' %}" class="carousel-thumb" alt="Tomato Sauce">
+              <p class="mt-2 fw-semibold">Tomato Sauce</p>
+            </div>
+            <div class="carousel-card">
+              <img src="{% static 'yipee.jpg' %}" class="carousel-thumb" alt="Yippee">
+              <p class="mt-2 fw-semibold">Yippee Noodles</p>
+            </div>
+            <div class="carousel-card">
+              <img src="{% static 'jam.jpg' %}" class="carousel-thumb" alt="Jam">
+              <p class="mt-2 fw-semibold">Kissan Jam</p>
+            </div>
+            <div class="carousel-card">
+              <img src="{% static 'Cashew.jpg' %}" class="carousel-thumb" alt="Cashew">
+              <p class="mt-2 fw-semibold">Cashews</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Carousel Controls -->
+      <button class="carousel-control-prev" type="button" data-bs-target="#freshMartCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon bg-dark rounded-circle p-3" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#freshMartCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon bg-dark rounded-circle p-3" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  </div>
+</section>
+<section class="py-5 bg-white">
+  <div class="container-fluid">
+    <h3 class="section-title">Seasonal Products & Offers</h3>
+    <div class="row g-4 justify-content-center">
+
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <a href="fruits_pageview">
+          <div class="product-card position-relative">
+            <span class="badge bg-warning position-absolute top-0 start-0 m-2">Seasonal</span>
+            <img src="{% static 'mango.jpg' %}" alt="Mango" loading="lazy">
+            <h6>Mango</h6>
+            <p>₹120/kg</p>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <a href="vegitable_pageview">
+          <div class="product-card position-relative">
+            <span class="badge bg-warning position-absolute top-0 start-0 m-2">Seasonal</span>
+            <img src="{% static 'pumpkin.jpg' %}" alt="Pumpkin" loading="lazy">
+            <h6>Pumpkin</h6>
+            <p>₹35/kg</p>
+          </div>
+        </a>
+      </div>
+
+      
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <a href="fruits_pageview">
+          <div class="product-card position-relative">
+            <span class="badge bg-warning position-absolute top-0 start-0 m-2">Seasonal</span>
+            <img src="{% static 'jackfruit.jpg' %}" alt="Pumpkin" loading="lazy">
+            <h6>Jackfruit</h6>
+            <p>₹70/kg</p>
+          </div>
+        </a>
+      </div>
+
+      
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <a href="fruits_pageview">
+          <div class="product-card position-relative">
+            <span class="badge bg-warning position-absolute top-0 start-0 m-2">Seasonal</span>
+            <img src="{% static 'guava.jpg' %}" alt="Pumpkin" loading="lazy">
+            <h6>Guava</h6>
+            <p>₹35/kg</p>
+          </div>
+        </a>
+      </div>
+
+      
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <a href="fruits_pageview">
+          <div class="product-card position-relative">
+            <span class="badge bg-warning position-absolute top-0 start-0 m-2">Seasonal</span>
+            <img src="{% static 'red banana.jpg' %}" alt="Pumpkin" loading="lazy">
+            <h6>Red Banana</h6>
+            <p>₹60/kg</p>
+          </div>
+        </a>
+      </div>
+
+      
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <a href="fruits_pageview">
+          <div class="product-card position-relative">
+            <span class="badge bg-warning position-absolute top-0 start-0 m-2">Seasonal</span>
+            <img src="{% static 'orange.jpg' %}" alt="Pumpkin" loading="lazy">
+            <h6>Orange</h6>
+            <p>₹45/kg</p>
+          </div>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="py-5 bg-light">
+  <div class="container-fluid">
+    <h3 class="section-title">Deals of the Day 🔥</h3>
+    <div class="row g-4 justify-content-center">
+
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <a href="snack_pageview">
+          <div class="product-card position-relative">
+            <span class="badge bg-danger position-absolute top-0 start-0 m-2">50% OFF</span>
+            <img src="{% static 'oreo.jpg' %}" alt="Oreo" loading="lazy">
+            <h6>Oreo</h6>
+            <p><s>₹20</s> ₹10</p>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <a href="beverage_pageview">
+          <div class="product-card position-relative">
+            <span class="badge bg-danger position-absolute top-0 start-0 m-2">Flash Sale</span>
+            <img src="{% static 'sprite.jpg' %}" alt="Sprite" loading="lazy">
+            <h6>Sprite</h6>
+            <p><s>₹60</s> ₹45</p>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <a href="snack_pageview">
+          <div class="product-card position-relative">
+            <span class="badge bg-danger position-absolute top-0 start-0 m-2">Flash Sale</span>
+            <img src="{% static 'plain cake.jpg' %}" alt="Sprite" loading="lazy">
+            <h6>Plain Cake</h6>
+            <p><s>₹60</s> ₹45</p>
+          </div>
+        </a>
+      </div>
+
+
+
+      
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <a href="snack_pageview">
+          <div class="product-card position-relative">
+            <span class="badge bg-danger position-absolute top-0 start-0 m-2">Flash Sale</span>
+            <img src="{% static 'bread.jpg' %}" alt="Sprite" loading="lazy">
+            <h6>Bread</h6>
+            <p><s>₹40</s> ₹25</p>
+          </div>
+        </a>
+      </div>
+
+       <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <a href="snack_pageview">
+          <div class="product-card position-relative">
+            <span class="badge bg-danger position-absolute top-0 start-0 m-2">Flash Sale</span>
+            <img src="{% static 'lotichoco.jpg' %}" alt="Sprite" loading="lazy">
+            <h6>Loti Choco Pie</h6>
+            <p><s>₹30</s> ₹15</p>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <a href="beverage_pageview">
+          <div class="product-card position-relative">
+            <span class="badge bg-danger position-absolute top-0 start-0 m-2">50% OFF</span>
+            <img src="{% static 'Pepsi.jpg' %}" alt="Oreo" loading="lazy">
+            <h6>Pepsi</h6>
+            <p><s>₹60</s> ₹120</p>
+          </div>
+        </a>
+      </div>
+
+      
+
+    </div>
+  </div>
+</section>
+
+
+<section class="py-5 bg-white">
+  <div class="container-fluid">
+    <h3 class="section-title">Healthy Picks 🥬 Organic Corner</h3>
+    <div class="row g-4 justify-content-center">
+
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <a href="milk_pageview">
+          <div class="product-card position-relative">
+            <span class="badge bg-success position-absolute top-0 start-0 m-2">Organic</span>
+            <img src="{% static 'oraganicmilk.jpg' %}" alt="Organic Milk" loading="lazy">
+            <h6>Organic Milk</h6>
+            <p>₹70/ 1 Lr</p>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <a href="vegitable_pageview">
+          <div class="product-card position-relative">
+            <span class="badge bg-success position-absolute top-0 start-0 m-2">Organic</span>
+            <img src="{% static 'organicarrot.jpg' %}" alt="Organic Carrot" loading="lazy">
+            <h6>Organic Carrot</h6>
+            <p>₹80/ 1 kg</p>
+          </div>
+        </a>
+      </div>
+
+
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <a href="vegitable_pageview">
+          <div class="product-card position-relative">
+            <span class="badge bg-success position-absolute top-0 start-0 m-2">Organic</span>
+            <img src="{% static 'Papaya.jpg' %}" alt="Organic Carrot" loading="lazy">
+            <h6>Papaya</h6>
+            <p>₹60/ 1 kg</p>
+          </div>
+        </a>
+      </div>
+
+
+       <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <a href="#">
+          <div class="product-card position-relative">
+            <span class="badge bg-success position-absolute top-0 start-0 m-2">Organic</span>
+            <img src="{% static 'Honey.jpg' %}" alt="Organic Carrot" loading="lazy">
+            <h6>Honey</h6>
+            <p>₹120/1 Lr</p>
+          </div>
+        </a>
+      </div>
+
+        <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <a href="#">
+          <div class="product-card position-relative">
+            <span class="badge bg-success position-absolute top-0 start-0 m-2">Organic</span>
+            <img src="{% static 'Coconut.jpg' %}" alt="Organic Carrot" loading="lazy">
+            <h6>Coconut Oil</h6>
+            <p>₹180/500 ml</p>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <a href="vegitable_pageview">
+          <div class="product-card position-relative">
+            <span class="badge bg-success position-absolute top-0 start-0 m-2">Organic</span>
+            <img src="{% static 'Mashroom.jpg' %}" alt="Organic Carrot" loading="lazy">
+            <h6>Mashrooms</h6>
+            <p>₹120/500 gm</p>
+          </div>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ⭐ Trusted By Thousands Section -->
+<section class="trusted-section py-5">
+  <div class="container-fluid">
+
+    <div class="text-center mb-5">
+      <h3 class="section-title">Serving Families Every Day</h3>
+      <p class="fw-bold">Delivering fresh quality every single day</p>
+    </div>
+
+    <div class="row g-4">
+
+      <!-- Trust Box 1 -->
+      <div class="col-6 col-md-3">
+        <div class="trust-card text-center p-4">
+          <div class="trust-icon mb-3">🛡️</div>
+          <h4 class="fw-bold trust-number">99%</h4>
+          <p class="trust-label">Safe & Verified</p>
+        </div>
+      </div>
+
+      <!-- Trust Box 2 -->
+      <div class="col-6 col-md-3">
+        <div class="trust-card text-center p-4">
+          <div class="trust-icon mb-3">🌿</div>
+          <h4 class="fw-bold trust-number">200+</h4>
+          <p class="trust-label">Daily Fresh Items</p>
+        </div>
+      </div>
+
+      <!-- Trust Box 3 -->
+      <div class="col-6 col-md-3">
+        <div class="trust-card text-center p-4">
+          <div class="trust-icon mb-3">⏱️</div>
+          <h4 class="fw-bold trust-number">30 Min</h4>
+          <p class="trust-label">Fast Delivery</p>
+        </div>
+      </div>
+
+      <!-- Trust Box 4 -->
+      <div class="col-6 col-md-3">
+        <div class="trust-card text-center p-4">
+          <div class="trust-icon mb-3">💬</div>
+          <h4 class="fw-bold trust-number">24/7</h4>
+          <p class="trust-label">Support Ready</p>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+
+
+<!-- ⭐ Mini Guarantee Row -->
+<section class="guarantee-row py-4">
+  <div class="container-fluid">
+
+    <div class="row text-center justify-content-center g-3">
+
+      <div class="col-6 col-md-3">
+        <div class="guarantee-item">✔ Only fresh-quality sourced</div>
+      </div>
+
+      <div class="col-6 col-md-3">
+        <div class="guarantee-item">✔ Temperature-controlled delivery</div>
+      </div>
+
+      <div class="col-6 col-md-3">
+        <div class="guarantee-item">✔ Sanitized packing process</div>
+      </div>
+
+      <div class="col-6 col-md-3">
+        <div class="guarantee-item">✔ 100% safe groceries</div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+
+
+<!-- ⭐ Micro Badges Section -->
+<section class="micro-badges-section py-4">
+  <div class="container text-center">
+
+    <div class="d-flex flex-wrap justify-content-center gap-3">
+
+      <div class="badge-chip">🧼 Hygienic Packing</div>
+      <div class="badge-chip">🥶 Cold-Chain Maintained</div>
+      <div class="badge-chip">🛡️ Verified Sellers Only</div>
+      <div class="badge-chip">🔍 Quality Checked</div>
+      <div class="badge-chip">🏷️ Transparent Pricing</div>
+
+    </div>
+
+  </div>
+</section>
+
+
+
+<!-- Footer -->
+<footer class="bg-dark text-light pt-5 pb-3">
+  <div class="container-fluid">
+    <div class="row">
+
+      <!-- Column 1: Store Info -->
+      <div class="col-md-4 mb-4">
+        <h5 class="fw-bold">FreshMart</h5>
+        <p>📍 Alappuzha, Kerala, India</p>
+        <p>📞 +91 7356462150</p>
+        <p>✉️ aromalbabu9847@gmail.com</p>
+
+        <h5 class="fw-bold mt-3">Store Timings</h5>
+        <p>🕒 Monday – Friday: 8:00 AM – 9:00 PM</p>
+        <p>🕒 Saturday – Sunday: 9:00 AM – 10:00 PM</p>
+
+        <p class="small mt-2">FreshMart delivers fresh fruits, vegetables, snacks & beverages to your doorstep — fast, clean and reliable.</p>
+      </div>
+
+      <!-- Column 2: Location / Map -->
+      <div class="col-md-4 mb-4">
+        <h5 class="fw-bold">Location</h5>
+        <div class="footer-map rounded overflow-hidden mt-2">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3936.153430926323!2d76.36065107314897!3d9.407932282946168!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zOcKwMjQnMjguNSJOIDc2wrAyMSc0Ny42IkU!5e0!3m2!1sen!2sin!4v1764396708011!5m2!1sen!2sin" width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>  
+        </div>
+        <p class="mt-2"><strong>Parking:</strong> Available in front of the store</p>
+      </div>
+
+      <!-- Column 3: Useful Links & Socials -->
+      <div class="col-md-4 mb-4">
+        <h5 class="fw-bold">Useful Links</h5>
+        <ul class="list-unstyled">
+          <li><a href="#" class="footer-link">About Us</a></li>
+          <li><a href="#" class="footer-link">Terms & Conditions</a></li>
+          <li><a href="#" class="footer-link">Privacy Policy</a></li>
+          <li><a href="#" class="footer-link">Support</a></li>
+          <li><a href="shop" class="footer-link">Shop Online</a></li>
+          <li><a href="contact" class="footer-link">Contact Us</a></li>
+        </ul>
+
+        <h5 class="fw-bold mt-3">Follow Us</h5>
+        <div class="d-flex align-items-center mt-2 gap-3">
+          <a href="#" class="social-icon"><i class="fa-brands fa-whatsapp"></i></a>
+          <a href="#" class="social-icon"><i class="fa-brands fa-facebook"></i></a>
+          <a href="#" class="social-icon"><i class="fa-brands fa-instagram"></i></a>
+        </div>
+
+        <h5 class="fw-bold mt-3">Subscribe</h5>
+        <form class="d-flex mt-2" action="#" method="post">
+          {% csrf_token %}
+          <input type="email" class="form-control me-2 rounded" placeholder="Your email" required>
+          <button type="submit" class="btn btn-light btn-sm">Subscribe</button>
+        </form>
+      </div>
+
+    </div>
+
+    <!-- Bottom copyright -->
+    <div class="text-center pt-3 border-top mt-3">
+      <p class="small mb-0">&copy; 2025 FreshMart. All rights reserved.</p>
+      <p class="small mb-0">Designed with  by FreshMart Team</p>
+    </div>
+  </div>
+
+  <!-- Floating Buttons -->
+  <a href="https://www.instagram.com/s_p_y_r_o__007" class="instagram-small" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+  <a href="https://wa.me/917356462150" class="whatsapp-small" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+  <a href="https://www.facebook.com/" class="facebook-small" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
+
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

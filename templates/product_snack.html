@@ -1,0 +1,107 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Snack | FreshMart</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      background: #fff;
+    }
+
+    .form-label {
+      font-weight: 600;
+      color: #333;
+    }
+
+    .btn-success {
+      border-radius: 8px;
+      font-weight: 600;
+      padding: 10px 20px;
+      transition: 0.3s;
+    }
+
+    .btn-success:hover {
+      background-color: #157347;
+    }
+
+    footer {
+      background-color: #212529;
+      color: #f8f9fa;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-success shadow-sm">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="#">FreshMart</a>
+    <a href="{% url 'adminhome' %}" class="btn btn-light btn-sm">Back to Shop</a>
+  </div>
+</nav>
+
+<!-- Add Snack Form -->
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card p-4">
+        <h3 class="text-center text-success mb-4">Add New Snack</h3>
+
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+
+          <div class="mb-3">
+            <label class="form-label">Snack Image</label>
+            <input type="file" name="image" class="form-control" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Snack Name</label>
+            <input type="text" name="name" class="form-control" placeholder="Enter snack name" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Price (₹)</label>
+            <input type="number" name="price" class="form-control" placeholder="Enter price" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Stock</label>
+            <input type="number" name="stock" class="form-control" placeholder="Enter stock quantity" min="0" required>
+          </div>
+
+          <div class="text-center mt-4">
+            <button type="submit" class="btn btn-success w-100">Add Snack</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="text-center py-3 mt-5">
+  <p class="mb-0">&copy; 2025 FreshMart. All rights reserved.</p>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

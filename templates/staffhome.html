@@ -1,0 +1,314 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Staff Dashboard | FreshMart</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #f4f4f4;
+      color: #222;
+    }
+    .navbar {
+      background-color: #000;
+    }
+    .navbar-brand, .nav-link {
+      color: #fff !important;
+    }
+    .nav-link:hover {
+      color: #ccc !important;
+      text-decoration: underline;
+    }
+    .section-title {
+      border-bottom: 2px solid #000;
+      display: inline-block;
+      padding-bottom: 5px;
+      margin-bottom: 25px;
+      font-weight: 600;
+    }
+    .card {
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      background: #fff;
+      transition: 0.3s;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .card-img-top {
+      height: 200px;
+      object-fit: cover;
+      border-radius: 12px 12px 0 0;
+    }
+    .btn-dark {
+      background: #000;
+      border: none;
+    }
+    .btn-dark:hover {
+      background: #333;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">FreshMart Staff</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link active" href="staffhome">Home</a></li>
+          <li class="nav-item"><a class="nav-link active" href="/staff_update_order">Orders</a></li>
+          <li class="nav-item"><a class="nav-link" href="staff_update_return_order">Return Orders</a></li>
+          <li class="nav-item"><a class="nav-link" href="staff_view_profile">Profile</a></li>
+          <li class="nav-item"><a class="nav-link text-warning" href="logout">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container my-5">
+
+    <h3 class="text-center mb-5">Welcome to FreshMart Staff Dashboard</h3>
+
+    <!-- Snacks Section -->
+    <h4 class="section-title">Snacks</h4>
+    <div class="row g-4 mb-5">
+      {% for snack in result_1 %}
+      <div class="col-md-3">
+        <div class="card text-center">
+          {% if snack.image %}
+            <img src="{{ snack.image.url }}" class="card-img-top" alt="{{ snack.name }}">
+          {% else %}
+            <img src="{% static 'images/no_image.png' %}" class="card-img-top" alt="No Image">
+          {% endif %}
+          <div class="card-body">
+            <h5 class="card-title">{{ snack.name }}</h5>
+            <p class="text-muted">₹{{ snack.price }}</p>
+            <p>Stock: {{ snack.stock }}</p>
+            <a href="{% url 'product_snack_edit' snack.id %}" class="btn btn-dark btn-sm">Edit</a>
+             <a href="{% url 'delete_product_staff' snack.id %}" 
+     class="btn btn-danger btn-sm mt-2 w-100">
+     🗑 Delete
+  </a>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <p class="text-muted">No snacks available.</p>
+      {% endfor %}
+    </div>
+
+    <!-- Vegetables Section -->
+    <h4 class="section-title">Vegetables</h4>
+    <div class="row g-4 mb-5">
+      {% for veg in result_2 %}
+      <div class="col-md-3">
+        <div class="card text-center">
+          {% if veg.image %}
+            <img src="{{ veg.image.url }}" class="card-img-top" alt="{{ veg.name }}">
+          {% else %}
+            <img src="{% static 'images/no_image.png' %}" class="card-img-top" alt="No Image">
+          {% endif %}
+          <div class="card-body">
+            <h5 class="card-title">{{ veg.name }}</h5>
+            <p class="text-muted">₹{{ veg.price }}</p>
+            <p>Stock: {{ veg.stock }} | {{ veg.kg }} kg</p>
+            <a href="{% url 'product_vegitable_edit' veg.id %}" class="btn btn-dark btn-sm">Edit</a>
+            <a href="{% url 'delete_product_staff' veg.id %}" 
+     class="btn btn-danger btn-sm mt-2 w-100">
+     🗑 Delete
+  </a>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <p class="text-muted">No vegetables available.</p>
+      {% endfor %}
+    </div>
+
+    <!-- Beverages Section -->
+    <h4 class="section-title">Beverages</h4>
+    <div class="row g-4 mb-5">
+      {% for bev in result_3 %}
+      <div class="col-md-3">
+        <div class="card text-center">
+          {% if bev.image %}
+            <img src="{{ bev.image.url }}" class="card-img-top" alt="{{ bev.name }}">
+          {% else %}
+            <img src="{% static 'images/no_image.png' %}" class="card-img-top" alt="No Image">
+          {% endif %}
+          <div class="card-body">
+            <h5 class="card-title">{{ bev.name }}</h5>
+            <p class="text-muted">₹{{ bev.price }}</p>
+            <p>Stock: {{ bev.stock }} | {{ bev.liter }} L</p>
+            <a href="{% url 'product_beverages_edit' bev.id %}" class="btn btn-dark btn-sm">Edit</a>
+             <a href="{% url 'delete_product_staff' bev.id %}" 
+     class="btn btn-danger btn-sm mt-2 w-100">
+     🗑 Delete
+  </a>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <p class="text-muted">No beverages available.</p>
+      {% endfor %}
+    </div>
+
+    <!-- Fruits Section -->
+    <h4 class="section-title">Fruits</h4>
+    <div class="row g-4 mb-5">
+      {% for fruit in result_4 %}
+      <div class="col-md-3">
+        <div class="card text-center">
+          {% if fruit.image %}
+            <img src="{{ fruit.image.url }}" class="card-img-top" alt="{{ fruit.name }}">
+          {% else %}
+            <img src="{% static 'images/no_image.png' %}" class="card-img-top" alt="No Image">
+          {% endif %}
+          <div class="card-body">
+            <h5 class="card-title">{{ fruit.name }}</h5>
+            <p class="text-muted">₹{{ fruit.price }}</p>
+            <p>Stock: {{ fruit.stock }} | {{ fruit.kg }} kg</p>
+            <a href="{% url 'product_fruits_edit' fruit.id %}" class="btn btn-dark btn-sm">Edit</a>
+             <a href="{% url 'delete_product_staff' fruit.id %}" 
+     class="btn btn-danger btn-sm mt-2 w-100">
+     🗑 Delete
+  </a>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <p class="text-muted">No fruits available.</p>
+      {% endfor %}
+    </div>
+
+    <!-- Egg Section -->
+    <h4 class="section-title">Egg</h4>
+    <div class="row g-4 mb-5">
+      {% for egg in result_5 %}
+      <div class="col-md-3">
+        <div class="card text-center">
+          {% if egg.image %}
+            <img src="{{ egg.image.url }}" class="card-img-top" alt="{{ egg.name }}">
+          {% else %}
+            <img src="{% static 'images/no_image.png' %}" class="card-img-top" alt="No Image">
+          {% endif %}
+          <div class="card-body">
+            <h5 class="card-title">{{ egg.name }}</h5>
+            <p class="text-muted">₹{{ egg.price_per_egg }}</p>
+            <p>Stock: {{ egg.stock }}</p>
+            <a href="{% url 'product_egg_edit' egg.id %}" class="btn btn-dark btn-sm">Edit</a>
+             <a href="{% url 'delete_product_staff' egg.id %}" 
+     class="btn btn-danger btn-sm mt-2 w-100">
+     🗑 Delete
+  </a>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <p class="text-muted">No egg products available.</p>
+      {% endfor %}
+    </div>
+
+    <!-- Fish Section -->
+    <h4 class="section-title">Fish</h4>
+    <div class="row g-4 mb-5">
+      {% for fish in result_6 %}
+      <div class="col-md-3">
+        <div class="card text-center">
+          {% if fish.image %}
+            <img src="{{ fish.image.url }}" class="card-img-top" alt="{{ fish.name }}">
+          {% else %}
+            <img src="{% static 'images/no_image.png' %}" class="card-img-top" alt="No Image">
+          {% endif %}
+          <div class="card-body">
+            <h5 class="card-title">{{ fish.name }}</h5>
+            <p class="text-muted">₹{{ fish.price }}</p>
+            <p>Stock: {{ fish.stock }} | {{ fish.kg }} kg</p>
+            <a href="{% url 'product_fish_edit' fish.id %}" class="btn btn-dark btn-sm">Edit</a>
+              <a href="{% url 'delete_product_staff' fish.id %}" 
+     class="btn btn-danger btn-sm mt-2 w-100">
+     🗑 Delete
+  </a>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <p class="text-muted">No fish available.</p>
+      {% endfor %}
+    </div>
+
+    <!-- Fish Section -->
+    <h4 class="section-title">Rice</h4>
+    <div class="row g-4 mb-5">
+      {% for rice in result_7 %}
+      <div class="col-md-3">
+        <div class="card text-center">
+          {% if rice.image %}
+            <img src="{{ rice.image.url }}" class="card-img-top" alt="{{ fish.name }}">
+          {% else %}
+            <img src="{% static 'images/no_image.png' %}" class="card-img-top" alt="No Image">
+          {% endif %}
+          <div class="card-body">
+            <h5 class="card-title">{{ rice.name }}</h5>
+            <p class="text-muted">₹{{ rice.price }}</p>
+            <p>Stock: {{ rice.stock }} | {{ rice.kg }} kg</p>
+            <a href="{% url 'product_rice_edit' rice.id %}" class="btn btn-dark btn-sm">Edit</a>
+             <a href="{% url 'delete_product_staff' rice.id %}" 
+     class="btn btn-danger btn-sm mt-2 w-100">
+     🗑 Delete
+  </a>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <p class="text-muted">No fish available.</p>
+      {% endfor %}
+    </div>
+
+    
+    <!-- Milk Section -->
+    <h4 class="section-title">Milk</h4>
+    <div class="row g-4 mb-5">
+      {% for milk in result_8 %}
+      <div class="col-md-3">
+        <div class="card text-center">
+          {% if milk.image %}
+            <img src="{{ milk.image.url }}" class="card-img-top" alt="{{ milk.name }}">
+          {% else %}
+            <img src="{% static 'images/no_image.png' %}" class="card-img-top" alt="No Image">
+          {% endif %}
+          <div class="card-body">
+            <h5 class="card-title">{{ milk.name }}</h5>
+            <p class="text-muted">₹{{ milk.price }}</p>
+            <p>Stock: {{ milk.stock }} | {{ milk.litre }} lr</p>
+            <a href="{% url 'product_milk_edit' milk.id %}" class="btn btn-dark btn-sm">Edit</a>
+              <a href="{% url 'delete_product_staff' milk.id %}" 
+     class="btn btn-danger btn-sm mt-2 w-100">
+     🗑 Delete
+  </a>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <p class="text-muted">No fish available.</p>
+      {% endfor %}
+    </div>
+
+  </div> <!-- END container -->
+
+  <footer class="text-center mt-5 mb-3 text-muted">
+    © 2025 FreshMart Staff Portal
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

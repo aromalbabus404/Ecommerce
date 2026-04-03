@@ -1,0 +1,361 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Track Order - FreshMart</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+/* === BODY === */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #f4f6f9;
+    color: #333;
+    margin: 0;
+}
+
+/* === NAVBAR === */
+.navbar {
+    background: black;
+    padding: 12px 30px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+.navbar-brand {
+    font-size: 28px;
+    font-weight: 800;
+    color: #fff !important;
+}
+.nav-link {
+    color: #fff !important;
+    margin-left: 20px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+.nav-link:hover {
+    color: #ffd43b !important;
+}
+
+/* === CONTAINER === */
+.container {
+    max-width: 900px;
+    margin: 50px auto;
+}
+
+/* === BACK BUTTON === */
+.btn-back {
+    margin-bottom: 25px;
+    border-radius: 12px;
+    font-weight: 500;
+    padding: 6px 18px;
+    transition: all 0.3s ease;
+}
+.btn-back:hover {
+    background-color: #0b5ed7;
+    color: #fff;
+}
+
+/* === ORDER CARD === */
+.order-card {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+    padding: 30px;
+    margin-bottom: 30px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.order-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 45px rgba(0,0,0,0.15);
+}
+
+/* === ORDER HEADER === */
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
+.order-status {
+    padding: 6px 16px;
+    border-radius: 16px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+}
+.status-pending { background: #fd7e14; }
+.status-delivered { background: #198754; }
+.status-cancelled { background: #dc3545; }
+
+/* === TABLE === */
+.table img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.table img:hover {
+    transform: scale(1.1);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* === TRACKER === */
+.tracker {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    margin: 50px 0 30px;
+}
+.tracker::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background: #e0e0e0;
+    border-radius: 3px;
+    z-index: 0;
+}
+.tracker::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 0;
+    height: 6px;
+    background: #198754;
+    border-radius: 3px;
+    width: 0%;
+    z-index: 1;
+    transition: width 1s ease-in-out;
+}
+
+.step {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    flex: 1;
+}
+.step .circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #e0e0e0;
+    margin: 0 auto;
+    line-height: 40px;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: all 0.5s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.step.completed .circle {
+    background: #198754;
+    animation: pop 0.5s ease forwards;
+}
+.step.completed .circle::before {
+    content: '✓';
+    font-size: 1.2rem;
+}
+.step:not(.completed) .circle::before {
+    content: attr(data-step);
+}
+.step .label {
+    margin-top: 12px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #495057;
+}
+@keyframes pop {
+    0% { transform: scale(0); opacity: 0; }
+    50% { transform: scale(1.3); opacity: 1; }
+    100% { transform: scale(1); }
+}
+
+/* === TOTAL AMOUNT === */
+.order-card p.total {
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-align: right;
+    margin-top: 20px;
+    color: #212529;
+}
+
+/* === FOOTER === */
+footer {
+    background: #212529;
+    padding: 25px;
+    text-align: center;
+    color: #fff;
+    margin-top: 60px;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+}
+
+/* === RESPONSIVE === */
+/* Mobile FIX: Vertical Tracker */
+@media (max-width: 768px) {
+
+    .tracker {
+        flex-direction: column;
+        gap: 40px;
+        align-items: flex-start;
+    }
+
+    .tracker::before,
+    .tracker::after {
+        top: 0;
+        left: 20px;
+        height: 100%;
+        width: 6px;
+    }
+
+    .tracker::before {
+        background: #e0e0e0;
+    }
+    .tracker::after {
+        background: #e0e0e0; 
+    }
+
+    .step {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        text-align: left;
+        margin-left: 2px;
+    }
+
+    .step .circle {
+        margin: 0;
+    }
+
+    .step .label {
+        margin-top: 0;
+        font-size: 1rem;
+    }
+
+    .order-card p.total {
+        text-align: left;
+    }
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const tracker = document.querySelector('.tracker');
+    const completedSteps = parseInt(tracker.getAttribute('data-completed')) || 0;
+    const totalSteps = tracker.querySelectorAll('.step').length;
+
+    // Calculate progress percentage
+    const progress = ((completedSteps) / (totalSteps - 1)) * 100;
+
+    // Dynamically inject the progress width
+    const styleSheet = document.styleSheets[0];
+    styleSheet.insertRule('.tracker::after { width: ' + progress + '%; }', styleSheet.cssRules.length);
+});
+</script>
+</head>
+
+<body>
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">FreshMart</a>
+    <div>
+      <a class="nav-link d-inline-block" href="/">Home</a>
+      <a class="nav-link d-inline-block" href="{% url 'shop' %}">Shop</a>
+      <a class="nav-link d-inline-block" href="/orders">Orders</a>
+      <a class="nav-link d-inline-block" href="/logout">Logout</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+
+<a href="/orders" class="btn btn-secondary btn-sm btn-back">← Back to Orders</a>
+
+{% if order %}
+<div class="order-card">
+    <div class="order-header">
+        <span>Order #{{ order.id }}</span>
+        <span class="order-status 
+            {% if order.STATUS == 'Cancelled' %}status-cancelled
+            {% elif order.STATUS == 'Delivered' %}status-delivered
+            {% else %}status-pending{% endif %}">
+            {{ order.STATUS }}
+        </span>
+    </div>
+
+    <p><strong>Placed on:</strong> {{ order.order_date|date:"F j, Y, H:i" }}</p>
+
+    <table class="table table-borderless">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Name</th>
+                <th>Qty</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for item in order.items.all %}
+            <tr>
+                <td>
+                    {% if item.SNACKS %}<img src="{{ item.SNACKS.image.url }}" alt="{{ item.SNACKS.name }}">{% endif %}
+                    {% if item.FRUITS %}<img src="{{ item.FRUITS.image.url }}" alt="{{ item.FRUITS.name }}">{% endif %}
+                    {% if item.VEGETABLES %}<img src="{{ item.VEGETABLES.image.url }}" alt="{{ item.VEGETABLES.name }}">{% endif %}
+                    {% if item.BEVERAGES %}<img src="{{ item.BEVERAGES.image.url }}" alt="{{ item.BEVERAGES.name }}">{% endif %}
+                    {% if item.EGGS %}<img src="{{ item.EGGS.image.url }}" alt="{{ item.EGGS.name }}">{% endif %}
+                    {% if item.FISH %}<img src="{{ item.FISH.image.url }}" alt="{{ item.FISH.name }}">{% endif %}
+                    {% if item.RICE %}<img src="{{ item.RICE.image.url }}" alt="{{ item.RICE.name }}">{% endif %}
+                    {% if item.MILK %}<img src="{{ item.MILK.image.url }}" alt="{{ item.MILK.name }}">{% endif %}
+                </td>
+                <td>
+                    {% if item.SNACKS %}{{ item.SNACKS.name }}{% endif %}
+                    {% if item.FRUITS %}{{ item.FRUITS.name }}{% endif %}
+                    {% if item.VEGETABLES %}{{ item.VEGETABLES.name }}{% endif %}
+                    {% if item.BEVERAGES %}{{ item.BEVERAGES.name }}{% endif %}
+                    {% if item.EGGS %}{{ item.EGGS.name }}{% endif %}
+                    {% if item.FISH %}{{ item.FISH.name }}{% endif %}
+                    {% if item.RICE %}{{ item.RICE.name }}{% endif %}
+                    {% if item.MILK %}{{ item.MILK.name }}{% endif %}
+                </td>
+                <td>{{ item.quantity }}</td>
+                <td>${{ item.price }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+   <div class="tracker" data-completed="{{ status_number }}">
+    {% for step in steps %}
+        <div class="step {% if forloop.counter0 <= status_number %}completed{% endif %}">
+            <div class="circle" data-step="{{ forloop.counter }}"></div>
+            <div class="label">{{ step }}</div>
+        </div>
+    {% endfor %}
+   </div>
+
+    <p class="total"><strong>Total Paid:</strong> ${{ order.total_price }}</p>
+</div>
+{% else %}
+<p class="text-muted">Order not found.</p>
+{% endif %}
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+    © {% now "Y" %} FreshMart • Premium Grocery Delivery
+</footer>
+
+</body>
+</html>

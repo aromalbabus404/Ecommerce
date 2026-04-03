@@ -1,0 +1,145 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FreshMart Login</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at top left, #0a0a0a, #151515);
+      display: flex;
+      height: 100vh;
+      color: #fff;
+      overflow: hidden;
+    }
+    .left-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #0d0d0d, #1f1f1f);
+      text-align: center;
+      border-right: 1px solid rgba(255,255,255,0.1);
+    }
+    .left-panel h1 { color: #00ffb3; font-size: 3rem; font-weight: 800; }
+    .left-panel p { color: #aaa; margin-top: 10px; }
+    .right-panel {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(145deg, #101010, #1e1e1e);
+    }
+    .glass-box {
+      position: relative;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(18px);
+      border-radius: 20px;
+      padding: 2.5rem;
+      width: 90%;
+      max-width: 380px;
+      box-shadow: 0 0 25px rgba(0,255,179,0.15);
+    }
+    .glass-box h4 { text-align: center; margin-bottom: 1.5rem; color: #00ffb3; }
+    .form-control {
+      background: rgba(255,255,255,0.08);
+      border: none;
+      color: #fff;
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-bottom: 15px;
+    }
+    .form-control:focus { outline: none; background: rgb(243, 239, 239); }
+    .btn-login {
+      width: 100%;
+      border-radius: 10px;
+      background: linear-gradient(90deg, #00ffb3, #0077ff);
+      color: #000;
+      font-weight: 700;
+      border: none;
+      padding: 12px;
+      margin-top: 10px;
+    }
+    .btn-login:hover { transform: translateY(-2px); box-shadow: 0 0 15px rgba(0,255,179,0.5); }
+    .register-link { text-align: center; margin-top: 15px; color: #ccc; }
+    .register-link a { color: #00ffb3; text-decoration: none; font-weight: 600; }
+    .register-link a:hover { text-decoration: underline; }
+    .error-message { color: rgb(19, 181, 19); font-size: 0.9rem; margin-bottom: 10px; text-align: center; }
+    @media (max-width: 900px) { body { flex-direction: column; } .left-panel { display: none; } .right-panel { width: 100%; height: 100vh; } }
+  </style>
+</head>
+<body>
+
+  <div class="left-panel">
+    <h1>FreshMart</h1>
+    <p>Freshly curated, naturally yours.</p>
+  </div>
+
+  <div class="right-panel">
+    <div class="glass-box">
+      <h4><i class="bi bi-person-circle me-2"></i>Login to FreshMart</h4>
+
+      <!-- Django messages -->
+      {% if messages %}
+        {% for message in messages %}
+          <div class="error-message">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+
+      <form method="POST" action="">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <div class="mb-3" style="position:relative;">
+  <input type="password" class="form-control" id="password" name="password"
+   placeholder="Ex: Pass@12A"
+   pattern="(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&]).{6,}"
+   title="Must contain at least one uppercase letter, one number and one special character (@,$,!,etc)"
+   required>
+
+  <i class="bi bi-eye-slash-fill" id="togglePassword"
+     style="position:absolute; right:10px; top:15px; cursor:pointer; color:#00ffb3;"></i>
+</div>
+
+          </div>
+        <button type="submit" class="btn-login">Login</button>
+      </form>
+
+      <div class="register-link">
+        Don't have an account? <a href="{% url 'user_register' %}">Register</a>
+      </div>
+      <div class="register-link">
+        <a href="forgot_password">Forgot Password?</a>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+const togglePassword = document.getElementById("togglePassword");
+const password = document.getElementById("password");
+
+togglePassword.addEventListener("click", function () {
+    const type = password.getAttribute("type") === "password" ? "text" : "password";
+
+    password.setAttribute("type", type);
+
+    this.classList.toggle("bi-eye");
+    this.classList.toggle("bi-eye-slash-fill");
+});
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

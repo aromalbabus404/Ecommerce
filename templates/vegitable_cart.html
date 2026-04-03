@@ -1,0 +1,260 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vegetable Details | FreshMart</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    body {
+      background: linear-gradient(120deg, #fafafa 0%, #f5f5f5 50%, #eeeeee 100%);
+      font-family: "Poppins", sans-serif;
+      color: #2b2b2b;
+    }
+
+    .navbar {
+      background: linear-gradient(90deg, #000000 0%, #1a1a1a 100%);
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25);
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      color: #ffffff !important;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+    }
+    
+    .product-card {
+      border: none;
+      border-radius: 24px;
+      background: #ffffff;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      transition: all 0.4s ease-in-out;
+      padding: 35px;
+    }
+
+    .product-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .product-card:hover .product-img{
+      transform: scale(1.08);
+      filter: grayscale(0%) contrast(1.03) saturate(1.02);
+    }
+
+
+    .product-img {
+      width: 100%;
+      height: 400px;
+      border-radius: 18px;
+      object-fit: cover;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      filter: grayscale(10%) contrast(0.98) saturate(0.98);
+      transition: transform .5s ease, filter .45s ease;
+      background: var(--soft);
+    }
+    .details {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 30px;
+    }
+
+    .details h3 {
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 12px;
+    }
+
+    .price {
+      font-size: 1.9rem;
+      font-weight: 600;
+      color: #000;
+      margin-bottom: 10px;
+    }
+
+    .stock {
+      font-size: 1rem;
+      color: #555;
+      margin-bottom: 25px;
+    }
+
+    .btn-dark {
+      background: linear-gradient(135deg, #333333, #000000);
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      padding: 12px 35px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+      color: #fff;
+      transition: 0.3s;
+    }
+
+    .btn-dark:hover {
+      background: linear-gradient(135deg, #000000, #111111);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+    }
+
+    .form-control {
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+
+    .review-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #111;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 22px;
+      font-weight: 600;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .review-card {
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 15px;
+      margin-bottom: 20px;
+    }
+
+    footer {
+      background: linear-gradient(90deg, #000000, #1c1c1c);
+      color: #fff;
+      font-size: 0.95rem;
+      letter-spacing: 0.4px;
+    }
+
+    @media (max-width: 767px) {
+      .product-img {
+        height: 300px;
+      }
+      .details {
+        padding: 20px 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
+  <div class="container-fluid">
+    <a class="navbar-brand fs-4" href="{% url 'shop' %}">🍃 FreshMart</a>
+    <div>
+      <a href="{% url 'view_cart' %}" class="btn btn-light btn-sm me-2">🛒 Cart</a>
+      <a href="{% url 'shop' %}" class="btn btn-outline-light btn-sm">← Back to Shop</a>
+    </div>
+  </div>
+</nav>
+
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-danger">{{ message }}</div>
+  {% endfor %}
+{% endif %}
+
+
+<!-- Product Section -->
+<div class="container py-5">
+  {% for v in result %}
+  <div class="card product-card mb-5">
+    <div class="row g-4 align-items-center">
+
+      <!-- Image -->
+      <div class="col-md-6">
+        <img src="{{ v.image.url }}" alt="{{ v.name }}" class="product-img">
+      </div>
+
+      <!-- Details -->
+      <div class="col-md-6 details">
+        <h3>{{ v.name }}</h3>
+        <p class="price">₹{{ v.price }}</p>
+        <p class="stock">Available Stock: {{ v.stock }} ({{ v.kg }})</p>
+
+        {% if v.stock > 0 %}
+        <form method="POST">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label class="form-label fw-semibold text-dark">Select Quantity</label>
+            <input type="number" name="quantity" class="form-control w-50"
+                   min="1" max="{{ v.stock }}" value="1" required>
+          </div>
+          <button type="submit" class="btn btn-dark mt-2">
+            <i class="bi bi-bag-plus"></i> Add to Cart
+          </button>
+        </form>
+        {% else %}
+          <div class="alert alert-dark mt-3" role="alert">
+            ⚠️ Out of Stock
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<!-- Review Section -->
+<div class="container mt-5">
+  <div class="card shadow-lg p-4" style="border-radius: 22px;">
+    <h3 class="fw-bold mb-4 text-dark">
+      <i class="bi bi-chat-dots-fill text-dark"></i> Customer Reviews
+    </h3>
+
+    {% if vegitable_review %}
+      {% for r in vegitable_review %}
+      <div class="d-flex review-card">
+
+        <!-- User Avatar -->
+        <div class="review-avatar">
+          {{ r.USER.username|first|upper }}
+        </div>
+
+        <!-- Review Content -->
+        <div class="ms-3 flex-grow-1">
+          <div class="d-flex justify-content-between">
+            <h5 class="fw-semibold text-dark mb-1">{{ r.USER.username }}</h5>
+            <div>
+              {% for i in "12345" %}
+                {% if forloop.counter <= r.rating|add:"0" %}
+                  <i class="bi bi-star-fill text-warning"></i>
+                {% else %}
+                  <i class="bi bi-star text-warning"></i>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+          <p class="text-secondary mt-2">{{ r.comment }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+      <div class="text-center py-4">
+        <i class="bi bi-emoji-neutral fs-1 text-muted"></i>
+        <p class="text-muted mt-2">No reviews yet for this product.</p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="py-3 text-center mt-5 shadow-lg">
+  <p>&copy; 2025 <strong>FreshMart</strong> — Freshness in Black & White 🖤</p>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

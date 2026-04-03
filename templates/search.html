@@ -1,0 +1,291 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results | FreshMart</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: #f5f7fa;
+            font-family: 'Poppins', sans-serif;
+        }
+        .product-card {
+            border-radius: 15px;
+            overflow: hidden;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        .product-img {
+            height: 200px;
+            object-fit: cover;
+        }
+        .btn-add {
+            background-color: #212529;
+            color: #fff;
+            border-radius: 8px;
+            font-size: 0.85rem;
+        }
+        .btn-add:hover {
+            background-color: #000;
+            color: #fff;
+        }
+        .btn-view {
+            background-color: #fff;
+            color: #212529;
+            border: 1px solid #212529;
+            border-radius: 8px;
+            font-size: 0.85rem;
+        }
+        .btn-view:hover {
+            background-color: #212529;
+            color: #fff;
+        }
+        .section-divider {
+            text-align: center;
+            margin: 40px 0 20px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            position: relative;
+        }
+        .section-divider::before,
+        .section-divider::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 40%;
+            height: 1px;
+            background: #ccc;
+        }
+        .section-divider::before {
+            left: 0;
+        }
+        .section-divider::after {
+            right: 0;
+        }
+
+        /* Navbar and Footer Black Background */
+        .navbar, footer {
+            background-color: #000 !important;
+        }
+        footer a {
+            color: #fff;
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">🍃 FreshMart</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/shop">Back To Shop</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <h3 class="mb-4">Search results for: <strong>{{ query }}</strong></h3>
+
+    <!-- Fruits -->
+    {% if fruits %}
+    <div class="section-divider">Fruits</div>
+    <div class="row g-4">
+        {% for f in fruits %}
+        <div class="col-md-3 col-sm-6">
+            <a href="{% url 'fruit_cart' f.id %}" class="text-decoration-none text-dark">
+                <div class="card product-card">
+                    <img src="{{ f.image.url }}" class="product-img card-img-top" alt="{{ f.name }}">
+                    <div class="card-body text-center">
+                        <h6>{{ f.name }}</h6>
+                        <p class="text-muted">₹{{ f.price }}</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Snacks -->
+    {% if snaks %}
+    <div class="section-divider">Snacks</div>
+    <div class="row g-4">
+        {% for s in snaks %}
+        <div class="col-md-3 col-sm-6">
+            <a href="{% url 'snack_cart' s.id %}" class="text-decoration-none text-dark">
+                <div class="card product-card">
+                    <img src="{{ s.image.url }}" class="product-img card-img-top" alt="{{ s.name }}">
+                    <div class="card-body text-center">
+                        <h6>{{ s.name }}</h6>
+                        <p class="text-muted">₹{{ s.price }}</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Vegetables -->
+    {% if vegetables %}
+    <div class="section-divider">Vegetables</div>
+    <div class="row g-4">
+        {% for v in vegetables %}
+        <div class="col-md-3 col-sm-6">
+            <a href="{% url 'vegitable_cart' v.id %}" class="text-decoration-none text-dark">
+                <div class="card product-card">
+                    <img src="{{ v.image.url }}" class="product-img card-img-top" alt="{{ v.name }}">
+                    <div class="card-body text-center">
+                        <h6>{{ v.name }}</h6>
+                        <p class="text-muted">₹{{ v.price }}</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Beverages -->
+    {% if beverages %}
+    <div class="section-divider">Beverages</div>
+    <div class="row g-4">
+        {% for b in beverages %}
+        <div class="col-md-3 col-sm-6">
+            <a href="{% url 'beverges_cart' b.id %}" class="text-decoration-none text-dark">
+                <div class="card product-card">
+                    <img src="{{ b.image.url }}" class="product-img card-img-top" alt="{{ b.name }}">
+                    <div class="card-body text-center">
+                        <h6>{{ b.name }}</h6>
+                        <p class="text-muted">₹{{ b.price }}</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    
+     <!-- Eggs -->
+    {% if egg %}
+    <div class="section-divider">Eggs</div>
+    <div class="row g-4">
+        {% for e in egg %}
+        <div class="col-md-3 col-sm-6">
+            <a href="{% url 'egg_cart' e.id %}" class="text-decoration-none text-dark">
+                <div class="card product-card">
+                    <img src="{{ e.image.url }}" class="product-img card-img-top" alt="{{ e.name }}">
+                    <div class="card-body text-center">
+                        <h6>{{ e.name }}</h6>
+                        <p class="text-muted">₹{{ e.price_per_egg }}</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+
+    
+     <!-- Fish -->
+    {% if fish %}
+    <div class="section-divider">Fish</div>
+    <div class="row g-4">
+        {% for f in fish %}
+        <div class="col-md-3 col-sm-6">
+            <a href="{% url 'fish_cart' f.id %}" class="text-decoration-none text-dark">
+                <div class="card product-card">
+                    <img src="{{ f.image.url }}" class="product-img card-img-top" alt="{{ f.name }}">
+                    <div class="card-body text-center">
+                        <h6>{{ f.name }}</h6>
+                        <p class="text-muted">₹{{ f.price }}</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    
+     <!-- Rice -->
+    {% if rice %}
+    <div class="section-divider">Rice</div>
+    <div class="row g-4">
+        {% for r in rice %}
+        <div class="col-md-3 col-sm-6">
+            <a href="{% url 'rice_cart' r.id %}" class="text-decoration-none text-dark">
+                <div class="card product-card">
+                    <img src="{{ r.image.url }}" class="product-img card-img-top" alt="{{ r.name }}">
+                    <div class="card-body text-center">
+                        <h6>{{ r.name }}</h6>
+                        <p class="text-muted">₹{{ r.price }}</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    
+     <!-- Milk -->
+    {% if milk %}
+    <div class="section-divider">Milk</div>
+    <div class="row g-4">
+        {% for m in milk %}
+        <div class="col-md-3 col-sm-6">
+            <a href="{% url 'milk_cart' m.id %}" class="text-decoration-none text-dark">
+                <div class="card product-card">
+                    <img src="{{ m.image.url }}" class="product-img card-img-top" alt="{{ m.name }}">
+                    <div class="card-body text-center">
+                        <h6>{{ m.name }}</h6>
+                        <p class="text-muted">₹{{ m.price }}</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+
+    {% if not fruits and not snaks and not vegetables and not beverages and not egg and not fish and not rice and not milk %}
+    <p class="text-danger fw-bold mt-4">No products found.</p>
+    {% endif %}
+</div>
+
+<!-- Footer -->
+<footer class="text-center mt-5 py-4 text-white">
+    <div class="container">
+        <p class="mb-1">&copy; 2025 FreshMart. All Rights Reserved.</p>
+        <p>
+            <a href="/" class="text-white">Home</a> |
+            <a href="/shop" class="text-white">Shop</a> |
+            <a href="/contact" class="text-white">Contact</a>
+        </p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,323 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop | FreshMart</title>
+
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Icons -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<style>
+
+/* BODY */
+body{
+  background:#f5f5f5;
+  font-family:'Segoe UI',sans-serif;
+}
+
+/* NAVBAR */
+.navbar{background:#000;}
+.navbar-brand{color:#fff !important;font-weight:700;}
+.nav-link{color:#fff !important;}
+
+/* SECTION */
+.section-divider{
+  text-align:center;
+  margin:80px 0 30px;
+  font-size:1.4rem;
+  font-weight:600;
+}
+
+/* CARD */
+.product-card{
+  border-radius:22px;
+  overflow:hidden;
+  position:relative;
+  background:#fff;
+  box-shadow:0 10px 30px rgba(0,0,0,0.08);
+  transition:0.3s;
+}
+.product-card:hover{
+  transform:translateY(-10px);
+  box-shadow:0 20px 50px rgba(0,0,0,0.15);
+}
+
+/* IMAGE */
+.product-img{
+  width:100%;
+  height:260px;
+  object-fit:cover;
+}
+
+/* OVERLAY */
+.product-overlay{
+  position:absolute;
+  bottom:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:linear-gradient(to top, rgba(0,0,0,0.8), transparent 60%);
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  padding:15px;
+  color:#fff;
+}
+
+/* TEXT */
+.product-title{font-size:1.2rem;font-weight:600;}
+.product-desc{font-size:0.85rem;}
+
+/* PRICE */
+.price-badge{
+  position:absolute;
+  top:12px;
+  right:12px;
+  background:#000;
+  color:#fff;
+  padding:5px 12px;
+  border-radius:14px;
+  font-size:0.8rem;
+}
+
+/* BUTTON */
+.add-btn{
+  width:100%;
+  margin-top:10px;
+  border:none;
+  border-radius:30px;
+  padding:10px;
+  font-weight:600;
+  background:#fff;
+  color:#000;
+}
+.add-btn:hover{
+  background:#000;
+  color:#fff;
+}
+
+/* FOOTER */
+footer{
+  background:#000;
+  color:#fff;
+  text-align:center;
+  padding:25px;
+  margin-top:60px;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+<div class="container-fluid">
+
+<a class="navbar-brand" href="/">🍃 FreshMart</a>
+
+<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+  <span class="navbar-toggler-icon"></span>
+</button>
+
+<div class="collapse navbar-collapse" id="mainNav">
+<ul class="navbar-nav ms-auto align-items-lg-center">
+
+<li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+
+<form class="d-flex ms-3 my-2 my-lg-0" action="{% url 'search' %}" method="GET">
+<input class="form-control me-2" type="search" name="q" placeholder="Search..." required>
+<button class="btn btn-light"><i class="fa fa-search"></i></button>
+</form>
+
+<li class="nav-item"><a class="nav-link" href="shop">Shop</a></li>
+<li class="nav-item"><a class="nav-link" href="about">About</a></li>
+<li class="nav-item"><a class="nav-link" href="contact">Contact</a></li>
+
+</ul>
+</div>
+
+</div>
+</nav>
+
+<div style="margin-top:90px;"></div>
+
+<!-- 🔁 ALL SECTIONS -->
+
+{% comment %} Helper: Repeatable structure {% endcomment %}
+
+<!-- SNACKS -->
+<div class="section-divider">Snacks</div>
+<div class="container"><div class="row g-4">
+{% for i in result %}
+<div class="col-md-3 col-sm-6">
+<a href="{% url 'snack_cart' i.id %}">
+<div class="product-card">
+<img src="{{ i.image.url }}" class="product-img">
+<div class="price-badge">₹{{ i.price }}</div>
+<div class="product-overlay">
+<div class="product-title">{{ i.name }}</div>
+<div class="product-desc">Fresh & tasty snacks.</div>
+<button class="add-btn">Add to cart</button>
+</div>
+</div>
+</a>
+</div>
+{% endfor %}
+</div></div>
+
+<!-- VEGETABLES -->
+<div class="section-divider">Vegetables</div>
+<div class="container"><div class="row g-4">
+{% for i in vegi %}
+<div class="col-md-3 col-sm-6">
+<a href="{% url 'vegitable_cart' i.id %}">
+<div class="product-card">
+<img src="{{ i.image.url }}" class="product-img">
+<div class="price-badge">₹{{ i.price }}</div>
+<div class="product-overlay">
+<div class="product-title">{{ i.name }}</div>
+<div class="product-desc">Farm fresh vegetables.</div>
+<button class="add-btn">Add to cart</button>
+</div>
+</div>
+</a>
+</div>
+{% endfor %}
+</div></div>
+
+<!-- BEVERAGES -->
+<div class="section-divider">Beverages</div>
+<div class="container"><div class="row g-4">
+{% for i in bev %}
+<div class="col-md-3 col-sm-6">
+<a href="{% url 'beverges_cart' i.id %}">
+<div class="product-card">
+<img src="{{ i.image.url }}" class="product-img">
+<div class="price-badge">₹{{ i.price }}</div>
+<div class="product-overlay">
+<div class="product-title">{{ i.name }}</div>
+<div class="product-desc">Refreshing drinks.</div>
+<button class="add-btn">Add to cart</button>
+</div>
+</div>
+</a>
+</div>
+{% endfor %}
+</div></div>
+
+<!-- FRUITS -->
+<div class="section-divider">Fruits</div>
+<div class="container"><div class="row g-4">
+{% for i in fru %}
+<div class="col-md-3 col-sm-6">
+<a href="{% url 'fruit_cart' i.id %}">
+<div class="product-card">
+<img src="{{ i.image.url }}" class="product-img">
+<div class="price-badge">₹{{ i.price }}</div>
+<div class="product-overlay">
+<div class="product-title">{{ i.name }}</div>
+<div class="product-desc">Sweet & fresh fruits.</div>
+<button class="add-btn">Add to cart</button>
+</div>
+</div>
+</a>
+</div>
+{% endfor %}
+</div></div>
+
+<!-- EGGS -->
+<div class="section-divider">Eggs</div>
+<div class="container"><div class="row g-4">
+{% for i in egg %}
+<div class="col-md-3 col-sm-6">
+<a href="{% url 'egg_cart' i.id %}">
+<div class="product-card">
+<img src="{{ i.image.url }}" class="product-img">
+<div class="price-badge">₹{{ i.price }}</div>
+<div class="product-overlay">
+<div class="product-title">{{ i.name }}</div>
+<div class="product-desc">Fresh eggs.</div>
+<button class="add-btn">Add to cart</button>
+</div>
+</div>
+</a>
+</div>
+{% endfor %}
+</div></div>
+
+<!-- FISH -->
+<div class="section-divider">Fish</div>
+<div class="container"><div class="row g-4">
+{% for i in fish %}
+<div class="col-md-3 col-sm-6">
+<a href="{% url 'fish_cart' i.id %}">
+<div class="product-card">
+<img src="{{ i.image.url }}" class="product-img">
+<div class="price-badge">₹{{ i.price }}</div>
+<div class="product-overlay">
+<div class="product-title">{{ i.name }}</div>
+<div class="product-desc">Fresh seafood.</div>
+<button class="add-btn">Add to cart</button>
+</div>
+</div>
+</a>
+</div>
+{% endfor %}
+</div></div>
+
+<!-- RICE -->
+<div class="section-divider">Rice</div>
+<div class="container"><div class="row g-4">
+{% for i in pr %}
+<div class="col-md-3 col-sm-6">
+<a href="{% url 'rice_cart' i.id %}">
+<div class="product-card">
+<img src="{{ i.image.url }}" class="product-img">
+<div class="price-badge">₹{{ i.price }}</div>
+<div class="product-overlay">
+<div class="product-title">{{ i.name }}</div>
+<div class="product-desc">Premium rice.</div>
+<button class="add-btn">Add to cart</button>
+</div>
+</div>
+</a>
+</div>
+{% endfor %}
+</div></div>
+
+<!-- MILK -->
+<div class="section-divider">Milk</div>
+<div class="container"><div class="row g-4">
+{% for i in pm %}
+<div class="col-md-3 col-sm-6">
+<a href="{% url 'milk_cart' i.id %}">
+<div class="product-card">
+<img src="{{ i.image.url }}" class="product-img">
+<div class="price-badge">₹{{ i.price }}</div>
+<div class="product-overlay">
+<div class="product-title">{{ i.name }}</div>
+<div class="product-desc">Fresh milk.</div>
+<button class="add-btn">Add to cart</button>
+</div>
+</div>
+</a>
+</div>
+{% endfor %}
+</div></div>
+
+<!-- FOOTER -->
+<footer>
+<p>© 2025 FreshMart — Clean & Fresh</p>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

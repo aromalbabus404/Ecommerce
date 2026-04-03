@@ -1,0 +1,281 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ result.name }} | FreshMart</title>
+
+  <!-- Bootstrap & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #f6f7f8;
+      --ink: #0b0b0b;
+      --muted: #6f6f6f;
+      --soft: #efeff2;
+      --glass: rgba(255,255,255,0.55);
+      --glass-2: rgba(255,255,255,0.72);
+      --card-radius: 14px;
+      --glass-border: rgba(255,255,255,0.7);
+      --shadow-1: 0 6px 20px rgba(9,10,11,0.06);
+      --shadow-2: 0 12px 40px rgba(9,10,11,0.08);
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: linear-gradient(180deg, var(--bg) 0%, #ffffff 100%);
+      color: var(--ink);
+      margin:0;
+      padding:0;
+    }
+
+    .navbar{
+      background: linear-gradient(90deg, rgba(10,10,10,0.98), rgba(0,0,0,0.98));
+      padding: 0.7rem 1rem;
+      box-shadow: 0 8px 28px rgba(3,3,3,0.35);
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      backdrop-filter: blur(6px) saturate(120%);
+    }
+
+    .navbar-brand{
+      color: #fff !important;
+      font-weight:700;
+      font-size:1.75rem;
+      letter-spacing:0.4px;
+    }
+
+    .btn-dark {
+      background: linear-gradient(135deg, #333, #000);
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      padding: 12px 35px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+      color: #fff;
+      transition: 0.3s;
+    }
+
+    .btn-dark:hover {
+      background: linear-gradient(135deg, #000, #111);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.45);
+    }
+
+    .product-card{
+      border-radius: var(--card-radius);
+      overflow: hidden;
+      background: var(--glass-2);
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--shadow-1);
+      transition: transform .36s cubic-bezier(.2,.9,.2,1), box-shadow .36s ease, border-color .36s ease;
+      padding: 25px;
+      margin-bottom: 30px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .product-card:hover{
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-2);
+      border-color: rgba(0,0,0,0.06);
+    }
+
+    .product-img{
+      width: 100%;
+      height: 350px;
+      object-fit: cover;
+      border-radius: 12px;
+      filter: grayscale(10%) contrast(0.98) saturate(0.98);
+      transition: transform .5s ease, filter .45s ease;
+      background: var(--soft);
+    }
+
+    .product-card:hover .product-img{
+      transform: scale(1.08);
+      filter: grayscale(0%) contrast(1.03) saturate(1.02);
+    }
+
+    .details h3{
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--ink);
+    }
+
+    .price{
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 10px;
+    }
+
+    .stock{
+      font-size: 1rem;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .form-control{
+      border-radius: 12px;
+      border: 1px solid rgba(0,0,0,0.15);
+      padding: 8px 12px;
+    }
+
+    .error{
+      color: red;
+      font-weight: 500;
+      margin-top: 10px;
+    }
+
+    footer{
+      background: linear-gradient(180deg, #060606, #000);
+      color: #fff;
+      padding: 26px 0;
+      text-align:center;
+      margin-top: 60px;
+      border-top: 1px solid rgba(255,255,255,0.03);
+    }
+
+    footer p{
+      margin-bottom:8px;
+      opacity:0.95;
+    }
+
+    @media (max-width: 767px){
+      .product-img{height: 250px;}
+      .details{padding: 15px;}
+    }
+    .alert{
+      margin-top: 100px;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand fs-4" href="{% url 'shop' %}">🍃 FreshMart</a>
+    <div>
+      <a href="{% url 'view_cart' %}" class="btn btn-light btn-sm me-2">🛒 Cart</a>
+      <a href="{% url 'shop' %}" class="btn btn-outline-light btn-sm">← Back to Shop</a>
+    </div>
+  </div>
+</nav>
+
+
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-danger">{{ message }}</div>
+  {% endfor %}
+{% endif %}
+
+<!-- Milk Cart Section -->
+<div class="container py-5" style="margin-top: 80px;">
+  <div class="card product-card">
+    <div class="row g-4 align-items-center">
+      
+      <!-- Image -->
+      <div class="col-md-6">
+        {% if result.image %}
+          <img src="{{ result.image.url }}" alt="{{ result.name }}" class="product-img">
+        {% else %}
+          <img src="{% static 'images/no_image.png' %}" alt="No Image" class="product-img">
+        {% endif %}
+      </div>
+
+      <!-- Details -->
+      <div class="col-md-6 details">
+        <h3>{{ result.name }}</h3>
+        <p class="price">₹{{ result.price }} per litre</p>
+        <p class="stock">Available Stock: {{ result.stock }}</p>
+
+        {% if result.stock > 0 %}
+        <form method="POST">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label class="form-label fw-semibold text-dark">Select Quantity</label>
+            <input type="number" name="quantity" class="form-control w-50" min="1" max="{{ result.stock }}" value="1" required>
+          </div>
+          {% if error %}
+            <div class="error">{{ error }}</div>
+          {% endif %}
+          <button type="submit" class="btn btn-dark mt-2">
+            <i class="fa fa-cart-plus"></i> Add to Cart
+          </button>
+        </form>
+        {% else %}
+          <div class="alert alert-dark mt-3" role="alert">
+            ⚠️ Out of Stock
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Reviews Section -->
+<div class="container mt-5">
+  <div class="card shadow-lg p-4" style="border-radius: 22px;">
+    <h3 class="fw-bold mb-4 text-dark">
+      <i class="bi bi-chat-dots-fill text-dark"></i> Customer Reviews
+    </h3>
+
+    {% if milk_review %}
+      {% for r in milk_review %}
+      <div class="d-flex mb-4 pb-3 border-bottom">
+
+        <!-- User Avatar -->
+        <div style="width:60px; height:60px; border-radius:50%; background:#111; display:flex; 
+                    justify-content:center; align-items:center; color:white; font-size:22px;
+                    font-weight:600; box-shadow:0 4px 10px rgba(0,0,0,0.2);">
+          {{ r.USER.username|first|upper }}
+        </div>
+
+        <!-- Review Content -->
+        <div class="ms-3 flex-grow-1">
+
+          <!-- Username & Rating -->
+          <div class="d-flex justify-content-between">
+            <h5 class="fw-semibold text-dark mb-1">{{ r.USER.username }}</h5>
+            <div>
+              {% for i in "12345" %}
+                {% if forloop.counter <= r.rating|add:"0" %}
+                  <i class="bi bi-star-fill text-warning"></i>
+                {% else %}
+                  <i class="bi bi-star text-warning"></i>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+
+          <!-- Comment -->
+          <p class="text-secondary mt-2">{{ r.comment }}</p>
+
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+      <div class="text-center py-4">
+        <i class="bi bi-emoji-neutral fs-1 text-muted"></i>
+        <p class="text-muted mt-2">No reviews yet for this product.</p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="py-3">
+  <p>&copy; 2025 <strong>FreshMart</strong> — Fresh & Delicious 🥛</p>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

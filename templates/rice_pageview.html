@@ -1,0 +1,188 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FreshMart | Rice</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --black: #000;
+      --white: #fff;
+      --gray-dark: #2f2f2f;
+      --gray-light: #b8b8b8;
+      --gray-bg: #f4f4f4;
+    }
+
+    body {
+      background-color: var(--gray-bg);
+      color: var(--black);
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .navbar {
+      background: linear-gradient(90deg, var(--black), var(--gray-dark));
+      box-shadow: 0 4px 25px rgba(0, 0, 0, 0.3);
+      padding: 0.9rem 1.2rem;
+      transition: all 0.3s ease;
+    }
+
+    .navbar-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--white) !important;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+    }
+
+    .nav-link {
+      color: var(--gray-light) !important;
+      font-weight: 500;
+      margin-left: 18px;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--white) !important;
+      transform: translateY(-2px);
+    }
+
+    .nav-link.active {
+      color: var(--white) !important;
+      border-bottom: 2px solid var(--white);
+    }
+
+    .hero {
+      background: linear-gradient(to right, #000, #3a3a3a);
+      color: var(--white);
+      padding: 100px 0;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 3rem;
+    }
+
+    .hero p {
+      color: #d0d0d0;
+      font-size: 1.1rem;
+    }
+
+    .product-card {
+      background-color: #fff;
+      border: none;
+      border-radius: 12px;
+      transition: all 0.4s ease;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+
+    .product-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 10px;
+      transition: all 0.4s ease;
+    }
+
+    .product-card:hover img {
+      transform: scale(1.05);
+    }
+
+    footer {
+      background-color: var(--black);
+      color: #bbb;
+      padding: 20px 0;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">🍃 FreshMart</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav align-items-lg-center">
+        <li class="nav-item"><a class="nav-link {% if request.path == '/' %}active{% endif %}" href="/">Home</a></li>
+        <li class="nav-item"><a class="nav-link {% if 'shop' in request.path %}active{% endif %}" href="{% url 'shop' %}">Shop</a></li>
+        <li class="nav-item"><a class="nav-link {% if 'about' in request.path %}active{% endif %}" href="{% url 'about' %}">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="contact">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero">
+  <div class="container">
+    <h1 class="fw-bold">Fresh Rice Products</h1>
+    <p class="lead">Premium quality rice available in various grades — perfect for everyday meals.</p>
+  </div>
+</section>
+
+<!-- Products Section -->
+<section class="py-5 bg-light">
+  <div class="container">
+    <h3 class="text-center mb-5 fw-semibold text-dark">Available Rice</h3>
+    <div class="row g-4 justify-content-center">
+      
+      {% for rice in result %}
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <a href="{% url 'rice_cart' rice.id %}" class="text-decoration-none text-dark">
+          <div class="card product-card h-100 text-center p-3">
+
+            {% if rice.image %}
+              <img src="{{ rice.image.url }}" alt="{{ rice.name }}">
+            {% else %}
+              <img src="{% static 'images/no_image.png' %}" alt="No Image">
+            {% endif %}
+
+            <div class="card-body p-0 mt-2">
+              <h6 class="fw-bold">{{ rice.name }}</h6>
+              <p class="text-muted mb-1">₹{{ rice.price }} | {{ rice.kg }}</p>
+              <p class="text-muted mb-0">Stock: {{ rice.stock }}</p>
+            </div>
+
+          </div>
+        </a>
+      </div>
+      {% empty %}
+      <p class="text-center text-muted">No rice products available.</p>
+      {% endfor %}
+    
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="text-center">
+  <div class="container">
+    <p class="mb-0">© 2025 FreshMart | Black & White Edition | Designed by Admin</p>
+  </div>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

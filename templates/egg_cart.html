@@ -1,0 +1,220 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Egg Details | FreshMart</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    body {
+      background: linear-gradient(120deg, #f9f9f9 0%, #f2f2f2 50%, #ffffff 100%);
+      font-family: "Poppins", sans-serif;
+      color: #2b2b2b;
+    }
+
+    .navbar {
+      background: linear-gradient(90deg, #000000 0%, #1a1a1a 100%);
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25);
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      color: #ffffff !important;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+    }
+
+    .product-card {
+      border: none;
+      border-radius: 24px;
+      background: #ffffff;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      transition: all 0.4s ease-in-out;
+      padding: 35px;
+    }
+
+    .product-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .product-card:hover .product-img{
+      transform: scale(1.08);
+      filter: grayscale(0%) contrast(1.03) saturate(1.02);
+    }
+
+
+    .product-img {
+      width: 100%;
+      height: 400px;
+      border-radius: 18px;
+      object-fit: cover;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      filter: grayscale(10%) contrast(0.98) saturate(0.98);
+      transition: transform .5s ease, filter .45s ease;
+      background: var(--soft);
+    }
+
+    .details {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 30px;
+    }
+
+    .details h3 {
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 12px;
+    }
+
+    .price {
+      font-size: 1.9rem;
+      font-weight: 600;
+      color: #000;
+      margin-bottom: 10px;
+    }
+
+    .stock {
+      font-size: 1rem;
+      color: #555;
+      margin-bottom: 25px;
+    }
+
+    .btn-dark {
+      background: linear-gradient(135deg, #333333, #000000);
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      padding: 12px 35px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+      color: #fff;
+      transition: 0.3s;
+    }
+
+    .btn-dark:hover {
+      background: linear-gradient(135deg, #000000, #111111);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+    }
+
+    .form-control {
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+
+    footer {
+      background: linear-gradient(90deg, #000000, #1a1a1a);
+      color: #fff;
+      font-size: 0.95rem;
+      letter-spacing: 0.4px;
+    }
+
+    @media (max-width: 767px) {
+      .product-img {
+        height: 300px;
+      }
+      .details {
+        padding: 20px 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
+  <div class="container-fluid">
+    <a class="navbar-brand fs-4" href="{% url 'shop' %}">🍃 FreshMart</a>
+    <div>
+      <a href="{% url 'view_cart' %}" class="btn btn-light btn-sm me-2">🛒 Cart</a>
+      <a href="{% url 'shop' %}" class="btn btn-outline-light btn-sm">← Back to Shop</a>
+    </div>
+  </div>
+</nav>
+
+
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-danger">{{ message }}</div>
+  {% endfor %}
+{% endif %}
+
+
+<!-- Product Section -->
+<div class="container py-5">
+  {% for e in result %}
+  <div class="card product-card mb-5">
+    <div class="row g-4 align-items-center">
+      
+      <!-- Image -->
+      <div class="col-md-6">
+        <img src="{{ e.image.url }}" alt="{{ e.name }}" class="product-img">
+      </div>
+
+      <!-- Details -->
+      <div class="col-md-6 details">
+        <h3>{{ e.name }}</h3>
+        <p class="price">₹{{ e.price }}</p>
+        <p class="stock">Available Stock: {{ e.stock }} {{ e.kg }}</p>
+
+        {% if e.stock > 0 %}
+        <form method="POST">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label class="form-label fw-semibold text-dark">Select Quantity</label>
+            <input type="number" name="quantity" class="form-control w-50"
+                   min="1" max="{{ e.stock }}" value="1" required>
+          </div>
+          <button type="submit" class="btn btn-dark mt-2">
+            <i class="bi bi-bag-plus"></i> Add to Cart
+          </button>
+        </form>
+        {% else %}
+          <div class="alert alert-dark mt-3" role="alert">
+            ⚠️ Out of Stock
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+
+<!-- Reviews Section -->
+<div class="container mt-4">
+  <div class="card shadow-sm p-4">
+    <h4 class="mb-3">Customer Reviews 📝</h4>
+
+    {% if egg_review %}
+      {% for r in egg_review %}
+        <div class="border-bottom pb-3 mb-3">
+          <strong class="text-muted">User: {{ r.USER }}</strong><br>
+          <strong class="text-dark">⭐ {{ r.rating }} / 5</strong>
+          <p class="mt-2 mb-1">{{ r.comment }}</p>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p class="text-muted">No reviews found.</p>
+    {% endif %}
+  </div>
+</div>
+
+
+<!-- Footer -->
+<footer class="py-3 text-center mt-5 shadow-lg">
+  <p>&copy; 2025 <strong>FreshMart</strong> — Fresh in Black & White 🖤</p>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

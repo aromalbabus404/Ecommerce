@@ -1,0 +1,195 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Complaint Register | FreshMart</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --black: #111;
+      --gray: #444;
+      --light-gray: #ccc;
+      --off-white: #f9f9f9;
+      --white: #fff;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: linear-gradient(180deg, #f4f4f4, #e9e9e9);
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Navbar */
+    .navbar {
+      background: var(--black);
+      box-shadow: 0 4px 25px rgba(0, 0, 0, 0.4);
+      padding: 0.8rem 1.2rem;
+    }
+
+    .navbar-brand {
+      color: var(--white) !important;
+      font-weight: 700;
+      font-size: 1.8rem;
+    }
+
+    .nav-link {
+      color: var(--light-gray) !important;
+      font-weight: 500;
+      margin-right: 15px;
+      transition: 0.3s;
+    }
+
+    .nav-link:hover {
+      color: var(--white) !important;
+      text-decoration: underline;
+    }
+
+    /* Complaint Container */
+    .complaint-container {
+      max-width: 700px;
+      margin: 100px auto 50px;
+      background: var(--white);
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      padding: 40px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: var(--black);
+      font-weight: 600;
+    }
+
+    label {
+      font-weight: 500;
+      color: var(--gray);
+      margin-top: 10px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid var(--light-gray);
+      border-radius: 8px;
+      padding: 10px;
+      margin-top: 6px;
+      background: var(--off-white);
+      font-size: 0.95rem;
+      color: var(--black);
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--black);
+      background: var(--white);
+    }
+
+    button {
+      width: 100%;
+      background: var(--black);
+      color: var(--white);
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 500;
+      margin-top: 25px;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: var(--gray);
+    }
+
+    footer {
+      background: var(--black);
+      color: var(--white);
+      text-align: center;
+      padding: 25px 0;
+      font-size: 0.9rem;
+    }
+
+    footer a {
+      color: var(--light-gray);
+      text-decoration: none;
+      margin: 0 10px;
+    }
+
+    footer a:hover {
+      color: var(--white);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">🍃 FreshMart</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="responde_view_user">Complaint Responses</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Complaint Form -->
+  <div class="complaint-container">
+    <h2>Register Your Complaint</h2>
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" placeholder="Enter your email" required>
+
+      <label for="phone">Phone</label>
+      <input type="text" id="phone" name="phone" placeholder="Enter your phone number" required>
+
+      <label for="category">Complaint Category</label>
+      <select id="category" name="category" required>
+        <option value="">-- Select Category --</option>
+        <option value="Product">Product Issue</option>
+        <option value="Delivery">Delivery Issue</option>
+        <option value="Payment">Payment Issue</option>
+        <option value="Service">Service Feedback</option>
+        <option value="Other">Other</option>
+      </select>
+
+      <label for="subject">Subject</label>
+      <input type="text" id="subject" name="subject" placeholder="Enter complaint subject" required>
+
+      <label for="image">Upload Image (optional)</label>
+      <input type="file" id="image" name="image" accept="image/*">
+
+      <button type="submit">Submit Complaint</button>
+    </form>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 FreshMart. All rights reserved.</p>
+    <div>
+      <a href="/">Home</a> |
+      <a href="{% url 'shop' %}">Shop</a> |
+      <a href="{% url 'about' %}">About</a> |
+      <a href="{% url 'contact' %}">Contact</a>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
