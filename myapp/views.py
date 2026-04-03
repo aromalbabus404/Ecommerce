@@ -1253,19 +1253,23 @@ def staff_update_order(request):
             order.save()
 
             try:
-                if order.USER and order.USER.LOGIN.email:
+                user_email = getattr(order.USER.LOGIN, "email", None)
+
+                if user_email:
                     send_mail(
                         subject="Your Order Status Updated",
                         message=f"Hello {order.USER.username},\n\n"
                                 f"Your order #{order.id} status has been updated to: {new_status}.\n\n"
                                 f"Thank you for shopping with us!",
-                        from_email=settings.EMAIL_HOST_USER,   # ✅ FIXED
-                        recipient_list=[order.USER.LOGIN.email],
+                        from_email=settings.EMAIL_HOST_USER,
+                        recipient_list=[user_email],
                         fail_silently=False,
                     )
+                else:
+                    messages.warning(request, "Order updated, but user email not found.")
 
             except Exception as e:
-                print("Email Error:", e)
+                print("Email sending failed:", e)
                 messages.warning(request, "Order updated, but email not sent.")
 
         return redirect('staff_update_order')
@@ -1282,7 +1286,6 @@ def staff_update_order(request):
         "current_orders": current_orders,
         "history_orders": history_orders,
     })
-
 
 def staff_update_return_order(request):
     if request.method == "POST":
