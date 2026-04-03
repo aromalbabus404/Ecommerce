@@ -25,13 +25,13 @@
       background-color: var(--light-bg);
       color: var(--primary);
       overflow-x: hidden;
+      padding-top: 70px;
     }
 
     /* Navbar */
     .navbar {
       background: var(--primary);
       box-shadow: 0 4px 25px rgba(0,0,0,0.5);
-      padding: 0.8rem 1.2rem;
     }
 
     .navbar-brand {
@@ -90,10 +90,8 @@ h3.section-title {
   font-family: 'Playfair Display', serif;
   font-weight: 600;
   font-size: 2.2rem;
-  color: #1b5e20; /* premium deep green */
   text-align: center;
   margin-bottom: 3rem;
-  position: relative;
 }
 
 h3.section-title::after {
@@ -150,8 +148,7 @@ h3.section-title::after {
       border-radius: 20px;
       background: #fff;
       overflow: hidden;
-      transition: all 0.35s ease;
-      box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+      transition: 0.35s;
       text-align: center;
     }
 
@@ -161,10 +158,10 @@ h3.section-title::after {
     }
 
     .product-card img {
-      height: 220px;
       width: 100%;
+      height: auto;
+      aspect-ratio: 1/1;
       object-fit: cover;
-      transition: all 0.4s ease;
     }
 
     .product-card:hover img { transform: scale(1.08); }
@@ -286,9 +283,6 @@ h3.section-title::after {
   width: 170px;
   height: 170px;
   object-fit: cover;
-  border-radius: 20px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .carousel-thumb:hover {
@@ -299,6 +293,44 @@ h3.section-title::after {
 .carousel-card p {
   font-weight: 600;
   color: #111;
+}
+@media (max-width: 768px) {
+
+  body {
+    padding-top: 60px;
+  }
+
+  h3.section-title {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .hero-standard {
+    padding: 70px 20px;
+  }
+
+  .hero-text h1 {
+    font-size: 1.8rem;
+  }
+
+  .hero-text p {
+    font-size: 0.95rem;
+  }
+
+  .product-card img {
+    aspect-ratio: 1/1;
+  }
+
+  .carousel-thumb {
+    width: 100px;
+    height: 100px;
+  }
+
+  .container-fluid {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
 }
 
 @media (max-width: 767px) {
@@ -417,11 +449,8 @@ h3.section-title::after {
 }
 
  .hero-standard {
-    position: relative;
     padding: 110px 0;
-    background: url('{% static "a.jpg" %}') no-repeat center center/cover;
-    overflow: hidden;
-    margin-top: 84px;
+    background: url('{% static "a.jpg" %}') no-repeat center/cover;
   }
 
   /* Elegant gradient glow overlay */
@@ -455,16 +484,13 @@ h3.section-title::after {
   }
 
   .hero-text h1 {
-    font-size: 3.4rem;
-    font-weight: 800;
-    letter-spacing: 0.5px;
+    font-size: 3.2rem;
+  color: #fff;
   }
 
   .hero-text p {
-    font-size: 1.2rem;
-    margin-top: 15px;
-    line-height: 1.6;
-    opacity: 0.95;
+      color: #fff;
+
   }
 
   /* Premium glow buttons */
