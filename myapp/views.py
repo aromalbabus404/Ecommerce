@@ -1245,25 +1245,43 @@ def staff_update_order(request):
     if request.method == "POST":
         order_id = request.POST.get("order_id")
         new_status = request.POST.get("STATUS")
+
         order = Order.objects.filter(id=order_id).first()
+
         if order:
             order.STATUS = new_status
             order.save()
-            if order.USER and order.USER.LOGIN.email:
-                send_mail(
-                    subject="Your Order Status Updated",
-                    message=f"Hello {order.USER.username},\n\n"
-                            f"Your order #{order.id} status has been updated to: {new_status}.\n\n"
-                            f"Thank you for shopping with us!",
-                    from_email="yourgmail@gmail.com",
-                    recipient_list=[order.USER.LOGIN.email],   
-                    fail_silently=False,
-                )
-        return redirect('staff_update_order')
-    current_orders = Order.objects.exclude(STATUS__in=["Delivered", "Cancelled"]).order_by('-order_date')
-    history_orders = Order.objects.filter(STATUS__in=["Delivered", "Cancelled"]).order_by('-order_date')
-    return render(request, "staff_update_order.html", {"current_orders": current_orders,"history_orders": history_orders,})
 
+            try:
+                if order.USER and order.USER.LOGIN.email:
+                    send_mail(
+                        subject="Your Order Status Updated",
+                        message=f"Hello {order.USER.username},\n\n"
+                                f"Your order #{order.id} status has been updated to: {new_status}.\n\n"
+                                f"Thank you for shopping with us!",
+                        from_email=settings.EMAIL_HOST_USER,   # ✅ FIXED
+                        recipient_list=[order.USER.LOGIN.email],
+                        fail_silently=False,
+                    )
+
+            except Exception as e:
+                print("Email Error:", e)
+                messages.warning(request, "Order updated, but email not sent.")
+
+        return redirect('staff_update_order')
+
+    current_orders = Order.objects.exclude(
+        STATUS__in=["Delivered", "Cancelled"]
+    ).order_by('-order_date')
+
+    history_orders = Order.objects.filter(
+        STATUS__in=["Delivered", "Cancelled"]
+    ).order_by('-order_date')
+
+    return render(request, "staff_update_order.html", {
+        "current_orders": current_orders,
+        "history_orders": history_orders,
+    })
 
 
 def staff_update_return_order(request):

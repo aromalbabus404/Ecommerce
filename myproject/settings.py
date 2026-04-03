@@ -146,5 +146,5 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get('freshmartshop123@gmail.com')
-EMAIL_HOST_PASSWORD = os.environ.get('porz lrxa gbzo wtxl')
+EMAIL_HOST_PASSWORD = os.environ.get('kprk tgll btxh vzrl')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
