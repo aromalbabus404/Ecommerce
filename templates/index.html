@@ -494,15 +494,36 @@ h3.section-title::after {
   }
 
   /* Premium glow buttons */
-  .hero-buttons a {
-    display: inline-block;
-    padding: 13px 34px;
-    border-radius: 50px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: 0.3s ease;
-    margin-right: 12px;
+.hero-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.hero-buttons a {
+  display: inline-block;
+  padding: 13px 34px;
+  border-radius: 50px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: 0.3s ease;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .hero-buttons {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
   }
+
+  .hero-buttons a {
+    width: 90%;
+    text-align: center;
+    padding: 14px 20px;
+    margin-right: 0;
+  }
+}
 
   /* Glossy White Button */
   .btn-primary {
